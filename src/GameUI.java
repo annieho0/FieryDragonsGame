@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-public class GamePanel extends JPanel implements ActionListener {
+public class GameUI extends JPanel implements ActionListener {
     final int originalTileSize = 16;
     final int scale = 3;
     final int tileSize = originalTileSize * scale;
@@ -15,11 +15,13 @@ public class GamePanel extends JPanel implements ActionListener {
     final int screenWidth = tileSize * maxScreenCol; // 758 pixels
     final int screenHeight = tileSize * maxScreenRow; // 576 pixels
     Image img;
-    Image blueDragon1;
-    Image blueDragon2;
-    boolean useBlueDragon1 = true;
+    Image greyDragon1;
+    Image greyDragon2;
+    boolean useGreyDragon1 = true;
+    int dragonX = (screenWidth/2) - 100; // Initial x-coordinate of the dragon
+    int dragonY = screenHeight - 275; // Initial y-coordinate of the dragon
 
-    public GamePanel() {
+    public GameUI() {
         this.setBackground(Color.BLACK);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setDoubleBuffered(true);
@@ -41,38 +43,25 @@ public class GamePanel extends JPanel implements ActionListener {
 
         Font buttonFont = new Font("VT323", Font.BOLD, 40);
 
-        // Create the button
         MyButton button1 = new MyButton("LOAD GAME");
-        // Set button bound
         button1.setFont(buttonFont);
-        button1.setBounds(screenWidth / 2 - 100, 135, 200, 60); // Example bounds, adjust as needed
-        // Add button to panel
+        button1.setBounds(screenWidth / 2 - 100, 135, 200, 60);
         add(button1);
 
-        //Create the button
         MyButton button2 = new MyButton("EXIT");
-        // Set button bounds
         button2.setFont(buttonFont);
-        button2.setBounds(screenWidth / 2 - 100, 210, 200, 60); // Example bounds, adjust as needed
-        // Add button to panel
+        button2.setBounds(screenWidth / 2 - 100, 210, 200, 60);
         add(button2);
     }
 
     public void PictureAnimation() {
-        // Load the image
         try {
-            blueDragon1 = ImageIO.read(new File("BlueDragon1.png"));
+            greyDragon1 = ImageIO.read(new File("GreyDragon1.png"));
+            greyDragon2 = ImageIO.read(new File("GreyDragon2.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            blueDragon2 = ImageIO.read(new File("BlueDragon2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Start a timer to update the animation
-        Timer timer = new Timer(800, this); // 50 milliseconds interval
+        Timer timer = new Timer(600, this);
         timer.start();
     }
 
@@ -92,18 +81,15 @@ public class GamePanel extends JPanel implements ActionListener {
             g2.drawString(text, x + 4, y + 4);
             g2.setColor(Color.WHITE);
             g2.drawString(text, x, y);
-            if (useBlueDragon1) {
-                g2.drawImage(blueDragon1, 20, 50, 70, 70, this);
+            if (useGreyDragon1) {
+                g2.drawImage(greyDragon1, dragonX, dragonY, 200, 200, this);
             } else {
-                g2.drawImage(blueDragon2, 20, 50, 70, 70, this);
+                g2.drawImage(greyDragon2, dragonX, dragonY, 200, 200, this);
             }}
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Switch between the two dragon images
-        useBlueDragon1 = !useBlueDragon1;
-
-        // Repaint the panel to show the updated dragon image
+        useGreyDragon1 = !useGreyDragon1;
         repaint();
     }
 }

@@ -9,14 +9,12 @@ public class Main extends JFrame {
         window.setResizable(false);
         window.setTitle("Fiery Dragons");
 
-        GamePanel gamePanel = new GamePanel();
-        gamePanel.PictureAnimation();
-        window.add(gamePanel);
+        GameUI gameUI = new GameUI();
+        gameUI.PictureAnimation();
+        window.add(gameUI);
         window.pack();
 
         window.setLocationRelativeTo(null);
         window.setVisible(true);
     }
-
-
-}
+ }
