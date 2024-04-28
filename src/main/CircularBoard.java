@@ -6,7 +6,7 @@ import java.awt.*;
 public class CircularBoard extends JPanel {
 
     private int diameter;
-    private int holeDiameter; // Diameter of the hole in the center
+    private int holeDiameter;
 
     public CircularBoard(int diameter, int holeDiameter) {
         this.diameter = diameter;
@@ -20,31 +20,44 @@ public class CircularBoard extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Calculate the position to center the circles
+
         int outerX = (getWidth() - diameter) / 2;
         int outerY = (getHeight() - diameter) / 2;
         int innerX = (getWidth() - holeDiameter) / 2;
         int innerY = (getHeight() - holeDiameter) / 2;
 
-        // Draw the outer circle (board)
-        g2d.setColor(Color.BLACK);
+
+        g2d.setColor(Color.LIGHT_GRAY);
         g2d.fillOval(outerX, outerY, diameter, diameter);
 
-        // Draw the inner circle (hole)
-        g2d.setColor(getBackground()); // Use the background color to "erase" the inner circle
+
+        g2d.setColor(getBackground());
         g2d.fillOval(innerX, innerY, holeDiameter, holeDiameter);
 
-        // Draw lines to split the donut circle into 24 equal pieces
+
+        double startAngle = Math.PI / 0.3691;
         double angleIncrement = 2 * Math.PI / 24;
         for (int i = 0; i < 24; i++) {
-            double angle = i * angleIncrement;
+            double angle = startAngle + i * angleIncrement;
             int startX = (int) (getWidth() / 2 + Math.cos(angle) * (diameter / 2));
             int startY = (int) (getHeight() / 2 + Math.sin(angle) * (diameter / 2));
             int endX = (int) (getWidth() / 2 + Math.cos(angle) * (holeDiameter / 2));
             int endY = (int) (getHeight() / 2 + Math.sin(angle) * (holeDiameter / 2));
             g2d.drawLine(startX, startY, endX, endY);
         }
-    }
 
+
+        int caveOffset = (int) (25 / 1.5);
+        Cave northCave = new Cave(getWidth() / 2, outerY - caveOffset, 27, Color.lightGray, Color.pink);
+        Cave southCave = new Cave(getWidth() / 2, outerY + diameter + caveOffset, 27, Color.lightGray, Color.yellow);
+        Cave eastCave = new Cave(outerX + diameter + caveOffset, getHeight() / 2, 27, Color.lightGray, Color.blue);
+        Cave westCave = new Cave(outerX - caveOffset, getHeight() / 2, 27, Color.lightGray, Color.orange);
+
+
+        northCave.draw(g2d);
+        southCave.draw(g2d);
+        eastCave.draw(g2d);
+        westCave.draw(g2d);
+    }
 
 }
