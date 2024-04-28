@@ -12,14 +12,14 @@ public class GameUI extends JPanel implements ActionListener {
     final int tileSize = originalTileSize * scale;
     final int maxScreenCol = 15;
     final int maxScreenRow = 12;
-    final int screenWidth = tileSize * maxScreenCol; // 758 pixels
-    final int screenHeight = tileSize * maxScreenRow; // 576 pixels
+    final int screenWidth = tileSize * maxScreenCol; // 720
+    final int screenHeight = tileSize * maxScreenRow; // 576
     Image img;
     Image greyDragon1;
     Image greyDragon2;
     boolean useGreyDragon1 = true;
-    int dragonX = (screenWidth/2) - 100; // Initial x-coordinate of the dragon
-    int dragonY = screenHeight - 275; // Initial y-coordinate of the dragon
+    int dragonX = (screenWidth/2) - 100;
+    int dragonY = screenHeight - 275;
 
     public GameUI() {
         this.setBackground(Color.BLACK);
@@ -46,15 +46,23 @@ public class GameUI extends JPanel implements ActionListener {
         MyButton button1 = new MyButton("LOAD GAME");
         button1.setFont(buttonFont);
         button1.setBounds(screenWidth / 2 - 100, 135, 200, 60);
+        button1.setOpaque(false);
+        button1.setContentAreaFilled(false);
+        button1.setBorderPainted(false);
+        button1.setFocusPainted(false);
         add(button1);
 
         MyButton button2 = new MyButton("EXIT");
         button2.setFont(buttonFont);
         button2.setBounds(screenWidth / 2 - 100, 210, 200, 60);
+        button2.setOpaque(false);
+        button2.setContentAreaFilled(false);
+        button2.setBorderPainted(false);
+        button2.setFocusPainted(false);
         add(button2);
     }
 
-    public void PictureAnimation() {
+    public void PictureAnimationTitle() {
         try {
             greyDragon1 = ImageIO.read(new File("GreyDragon1.png"));
             greyDragon2 = ImageIO.read(new File("GreyDragon2.png"));

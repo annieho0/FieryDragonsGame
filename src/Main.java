@@ -10,7 +10,7 @@ public class Main extends JFrame {
         window.setTitle("Fiery Dragons");
 
         GameUI gameUI = new GameUI();
-        gameUI.PictureAnimation();
+        gameUI.PictureAnimationTitle();
         window.add(gameUI);
         window.pack();
 

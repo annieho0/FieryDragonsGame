@@ -20,6 +20,7 @@ public class MyButton extends JButton {
                     JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(MyButton.this);
                     frame.getContentPane().removeAll();
                     frame.getContentPane().add(menuUI);
+                    menuUI.PictureAnimationMenu();
                     frame.revalidate();
                     frame.repaint();
                 }
@@ -31,7 +32,7 @@ public class MyButton extends JButton {
                     JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(MyButton.this);
                     frame.getContentPane().removeAll();
                     frame.getContentPane().add(gameUI);
-                    gameUI.PictureAnimation();
+                    gameUI.PictureAnimationTitle();
                     frame.revalidate();
                     frame.repaint();
                 }
