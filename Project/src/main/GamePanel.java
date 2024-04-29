@@ -27,7 +27,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     TileManager tileManager = new TileManager(this);
     Thread gameThread;
     AssetSetter assetSetter = new AssetSetter(this);
-    public DragonCards[] obj = new DragonCards[10];
+    public DragonCards[] obj = new DragonCards[24];
     Circle[] circles;
 
     public GamePanel(){
