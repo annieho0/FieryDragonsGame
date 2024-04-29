@@ -1,3 +1,8 @@
+package tile;
+
+import main.GamePanel;
+import tile.Tile;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.BufferedReader;
@@ -7,7 +12,7 @@ import java.io.InputStreamReader;
 
 public class TileManager {
     GamePanel gp;
-    Tile [] tile;
+    Tile[] tile;
     int mapTileNum[][];
     public TileManager(GamePanel gp){
         this.gp = gp;
