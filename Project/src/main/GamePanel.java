@@ -1,6 +1,8 @@
 package main;
 
+import boardCards.AssetSetter;
 import tile.TileManager;
+import tokens.DragonCards;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,10 +19,15 @@ public class GamePanel extends JPanel implements Runnable{
     int fps = 60;
     Thread gameThread;
     TileManager tileManager = new TileManager(this);
+    AssetSetter assetSetter = new AssetSetter(this);
+    public DragonCards[] obj = new DragonCards[10];
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
+    }
+    public void setupGame(){
+        assetSetter.setObject();
     }
     public void startGameThread(){
         gameThread = new Thread(this);
@@ -34,7 +41,11 @@ public class GamePanel extends JPanel implements Runnable{
         g2.setColor(Color.WHITE);
         g2.fillRect(100, 100, tileSize, tileSize);
         tileManager.draw(g2);
-
+        for(int i = 0; i < obj.length; i++){
+            if(obj[i] != null){
+                obj[i].draw(g2, this);
+            }
+        }
         g2.dispose();
     }
 
