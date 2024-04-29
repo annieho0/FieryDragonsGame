@@ -83,8 +83,10 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         circles = new Circle[numCircles];
         for (int i = 0; i < numCircles; i++) {
             double angle = angleStep * i;
-            int circleX = (int) (centerX + radius * Math.cos(angle)) - (circleSize / 2);
-            int circleY = (int) (centerY + radius * Math.sin(angle)) - (circleSize / 2);
+            int xOffset = 25; // Adjust this value to move the circles further to the right
+            int circleX = (int) (centerX + radius * Math.cos(angle)) - (circleSize / 2) + xOffset;
+            int yOffset = 25;
+            int circleY = (int) (centerY + radius * Math.sin(angle)) - (circleSize / 2) - yOffset;
             circles[i] = new Circle(circleX, circleY, circleSize);}
     }
 
