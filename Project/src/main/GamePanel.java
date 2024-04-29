@@ -1,3 +1,7 @@
+package main;
+
+import tile.TileManager;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,6 +16,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int screenHeight = tileSize * maxScreenRow;
     int fps = 60;
     Thread gameThread;
+    TileManager tileManager = new TileManager(this);
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
@@ -22,6 +27,15 @@ public class GamePanel extends JPanel implements Runnable{
         gameThread.start();
     }
     public void update() {
+    }
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setColor(Color.WHITE);
+        g2.fillRect(100, 100, tileSize, tileSize);
+        tileManager.draw(g2);
+
+        g2.dispose();
     }
 
     @Override

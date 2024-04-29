@@ -1,3 +1,7 @@
+package main;
+
+import main.GamePanel;
+
 import javax.swing.*;
 import java.awt.image.BufferStrategy;
 
@@ -9,7 +13,7 @@ public class Window extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setVisible(true);
-        gamePanel = new GamePanel(); // Initialize the GamePanel
+        gamePanel = new GamePanel(); // Initialize the main.GamePanel
         getContentPane().add(gamePanel);
         pack();
 
