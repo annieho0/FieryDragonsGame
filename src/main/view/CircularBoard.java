@@ -50,8 +50,13 @@ public class CircularBoard extends JPanel {
             int endX = (int) (getWidth() / 2 + Math.cos(angle) * (holeDiameter / 2));
             int endY = (int) (getHeight() / 2 + Math.sin(angle) * (holeDiameter / 2));
             g2d.drawLine(startX, startY, endX, endY);
-        }
 
+            double midAngle = angle + angleIncrement / 2;
+            int circleX = (int) (getWidth() / 2 + Math.cos(midAngle) * ((diameter + holeDiameter) / 4));
+            int circleY = (int) (getHeight() / 2 + Math.sin(midAngle) * ((diameter + holeDiameter) / 4));
+            Circle circle = new Circle(circleX, circleY, 20, "/images/fire.png"); // replace with your image path
+            circle.draw(g2d);
+        }
 
         int caveOffset = (int) (25 / 1.5);
         Cave northCave = new Cave(getWidth() / 2, outerY - caveOffset, 27, "/images/greendragon.png", Color.white);
