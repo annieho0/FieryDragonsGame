@@ -1,4 +1,6 @@
-package src.main;
+package main.view;
+
+import main.view.Display;
 
 public class Launcher {
     public static void main(String[] args) {

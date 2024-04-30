@@ -1,18 +1,24 @@
-package src.main;
+package main.view;
+
+import main.cards.DragonCard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CircularBoard extends JPanel {
 
     private int diameter;
     private int holeDiameter;
 
+
     public CircularBoard(int diameter, int holeDiameter) {
         this.diameter = diameter;
         this.holeDiameter = holeDiameter;
         setPreferredSize(new Dimension(diameter, diameter));
     }
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -27,7 +33,7 @@ public class CircularBoard extends JPanel {
         int innerY = (getHeight() - holeDiameter) / 2;
 
 
-        g2d.setColor(Color.LIGHT_GRAY);
+        g2d.setColor(Color.lightGray);
         g2d.fillOval(outerX, outerY, diameter, diameter);
 
 
@@ -58,6 +64,7 @@ public class CircularBoard extends JPanel {
         southCave.draw(g2d);
         eastCave.draw(g2d);
         westCave.draw(g2d);
+
     }
 
 }
