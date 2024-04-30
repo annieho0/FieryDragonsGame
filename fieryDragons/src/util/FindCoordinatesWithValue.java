@@ -9,7 +9,7 @@ public class FindCoordinatesWithValue {
 
     public FindCoordinatesWithValue() {
         // Specify the path to your text file
-        String filePath = "Project/res/maps/map.txt";
+        String filePath = "fieryDragons/res/maps/map.txt";
 
         try {
             // Read the text file

@@ -1,8 +1,5 @@
 package main;
 
-import circle.ImageLoader;
-import main.GamePanel;
-
 import javax.swing.*;
 import java.awt.image.BufferStrategy;
 

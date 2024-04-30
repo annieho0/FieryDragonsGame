@@ -2,7 +2,6 @@ package circle;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -31,6 +30,9 @@ public class Circle {
             e.printStackTrace();
         }
     }
+    public String getFrontImage(){
+        return frontImagePath;
+    }
 
     public void setBackImage(String imagePath, int index) {
         this.backImagePath = imagePath;
@@ -42,6 +44,9 @@ public class Circle {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public String getBackImage(){
+        return backImagePath;
     }
 
     public void flip() {
@@ -62,5 +67,13 @@ public class Circle {
         } else {
             g.drawImage(frontImage, x, y, size, size, null);
         }
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
