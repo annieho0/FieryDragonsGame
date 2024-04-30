@@ -1,11 +1,10 @@
 package main.view;
 
-import main.cards.DragonCard;
+
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class CircularBoard extends JPanel {
 
@@ -44,7 +43,6 @@ public class CircularBoard extends JPanel {
         double startAngle = Math.PI / 0.3691;
         double angleIncrement = 2 * Math.PI / 24;
 
-        // Define your animal images
         String[] animalImages = {"/images/babydragon.png", "/images/bat.png", "/images/spider.png", "/images/salamander.png"};
 
         for (int i = 0; i < 24; i++) {
@@ -59,17 +57,16 @@ public class CircularBoard extends JPanel {
             int circleX = (int) (getWidth() / 2 + Math.cos(midAngle) * ((diameter + holeDiameter) / 4));
             int circleY = (int) (getHeight() / 2 + Math.sin(midAngle) * ((diameter + holeDiameter) / 4));
 
-            // Select the image based on the index
             String animalImage = animalImages[i % animalImages.length];
             Circle circle = new Circle(circleX, circleY, 20, animalImage);
             circle.draw(g2d);
         }
 
         int caveOffset = (int) (25 / 1.5);
-        Cave northCave = new Cave(getWidth() / 2, outerY - caveOffset, 27, "/images/greendragon.png", Color.white);
-        Cave southCave = new Cave(getWidth() / 2, outerY + diameter + caveOffset, 27, "/images/bluedragon.png", Color.white);
-        Cave eastCave = new Cave(outerX + diameter + caveOffset, getHeight() / 2, 27, "/images/pinkdragon.png", Color.white);
-        Cave westCave = new Cave(outerX - caveOffset, getHeight() / 2, 27, "/images/purpledragon.png", Color.white);
+        Cave northCave = new Cave(getWidth() / 2, outerY - caveOffset, 27, "/images/greendragon.png", Color.green);
+        Cave southCave = new Cave(getWidth() / 2, outerY + diameter + caveOffset, 27, "/images/bluedragon.png", Color.blue);
+        Cave eastCave = new Cave(outerX + diameter + caveOffset, getHeight() / 2, 27, "/images/pinkdragon.png", Color.pink);
+        Cave westCave = new Cave(outerX - caveOffset, getHeight() / 2, 27, "/images/purpledragon.png", Color.lightGray);
 
 
 

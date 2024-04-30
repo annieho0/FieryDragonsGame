@@ -27,9 +27,8 @@ public class Cave {
 
     public void draw(Graphics2D g2d) {
         //border
-        int borderWidth = 5;
         g2d.setColor(borderColor);
-        g2d.fillOval(x - radius - borderWidth, y - radius - borderWidth, 2 * (radius + borderWidth), 2 * (radius + borderWidth));
+        g2d.drawOval(x - radius, y - radius, 2 * radius, 2 * radius);
 
         //filled oval
         if (image != null) {

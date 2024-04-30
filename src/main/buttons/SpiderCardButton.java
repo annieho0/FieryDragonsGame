@@ -27,7 +27,7 @@ public class SpiderCardButton extends CardButton {
     protected BufferedImage loadImageNotFlipped() {
         BufferedImage img = null;
         try {
-            img = ImageIO.read(getClass().getResource("/images/fire.png"));
+            img = ImageIO.read(getClass().getResource("/images/volcano.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
