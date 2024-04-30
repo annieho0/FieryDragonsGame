@@ -43,6 +43,10 @@ public class CircularBoard extends JPanel {
 
         double startAngle = Math.PI / 0.3691;
         double angleIncrement = 2 * Math.PI / 24;
+
+        // Define your animal images
+        String[] animalImages = {"/images/babydragon.png", "/images/bat.png", "/images/spider.png", "/images/salamander.png"};
+
         for (int i = 0; i < 24; i++) {
             double angle = startAngle + i * angleIncrement;
             int startX = (int) (getWidth() / 2 + Math.cos(angle) * (diameter / 2));
@@ -54,7 +58,10 @@ public class CircularBoard extends JPanel {
             double midAngle = angle + angleIncrement / 2;
             int circleX = (int) (getWidth() / 2 + Math.cos(midAngle) * ((diameter + holeDiameter) / 4));
             int circleY = (int) (getHeight() / 2 + Math.sin(midAngle) * ((diameter + holeDiameter) / 4));
-            Circle circle = new Circle(circleX, circleY, 20, "/images/fire.png"); // replace with your image path
+
+            // Select the image based on the index
+            String animalImage = animalImages[i % animalImages.length];
+            Circle circle = new Circle(circleX, circleY, 20, animalImage);
             circle.draw(g2d);
         }
 
