@@ -5,8 +5,8 @@ import java.awt.event.MouseEvent;
 
 public class TwoSalamanderCard extends DragonCard {
 
-    public TwoSalamanderCard(int x, int y, int radius, Color fillColor, Color borderColor) {
-        super(x, y, radius, fillColor, borderColor);
+    public TwoSalamanderCard(int x, int y) {
+        super(x, y);
         setFocusable(true);
     }
 

@@ -5,8 +5,8 @@ import java.awt.event.MouseEvent;
 
 public class PirateCard extends DragonCard {
 
-    public PirateCard(int x, int y, int radius, Color fillColor, Color borderColor) {
-        super(x, y, radius, fillColor, borderColor);
+    public PirateCard(int x, int y) {
+        super(x, y);
         setFocusable(true);
     }
 

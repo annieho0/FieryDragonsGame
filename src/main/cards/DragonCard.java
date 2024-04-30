@@ -8,17 +8,11 @@ public abstract class DragonCard extends JComponent implements MouseListener {
 
     protected int x;
     protected int y;
-    protected int radius;
-    protected Color fillColor;
-    protected Color borderColor;
     protected boolean isFlipped = false;
 
-    public DragonCard(int x, int y, int radius, Color fillColor, Color borderColor) {
+    public DragonCard(int x, int y) {
         this.x = x;
         this.y = y;
-        this.radius = radius;
-        this.fillColor = fillColor;
-        this.borderColor = borderColor;
         addMouseListener(this);
     }
 
@@ -34,6 +28,4 @@ public abstract class DragonCard extends JComponent implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         repaint();
     }
-
-
 }

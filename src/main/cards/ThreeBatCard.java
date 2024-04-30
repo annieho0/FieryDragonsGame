@@ -5,8 +5,8 @@ import java.awt.event.MouseEvent;
 
 public class ThreeBatCard extends DragonCard {
 
-    public ThreeBatCard(int x, int y, int radius, Color fillColor, Color borderColor) {
-        super(x, y, radius, fillColor, borderColor);
+    public ThreeBatCard(int x, int y) {
+        super(x, y);
         setFocusable(true);
     }
 

@@ -5,8 +5,8 @@ import java.awt.event.MouseEvent;
 
 public class BatCard extends DragonCard {
 
-    public BatCard(int x, int y, int radius, Color fillColor, Color borderColor) {
-        super(x, y, radius, fillColor, borderColor);
+    public BatCard(int x, int y) {
+        super(x, y);
         setFocusable(true);
     }
 
