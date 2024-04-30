@@ -9,11 +9,14 @@ public class FindCoordinatesWithValue {
 
     public FindCoordinatesWithValue() {
         // Specify the path to your text file
-        String filePath = "fieryDragons/res/maps/map.txt";
+        // String filePath = "fieryDragons/res/maps/map.txt";
+        String absolutePath = "C:\\Users\\annie\\IdeaProjects\\CL_Monday06pm\\fieryDragons\\res\\maps\\map.txt";
+        //File file = new File(absolutePath);
+
 
         try {
             // Read the text file
-            File file = new File(filePath);
+            File file = new File(absolutePath);
             Scanner scanner = new Scanner(file);
 
             // Initialize coordinatesWithOne array
