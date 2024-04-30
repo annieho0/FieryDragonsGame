@@ -14,24 +14,11 @@ public class BatCardButton extends CardButton {
 
     @Override
     protected BufferedImage loadImageFlipped() {
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(getClass().getResource("/images/bat.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return img;
+        return loadImageFlipped("/images/bat.png");
     }
 
     @Override
     protected BufferedImage loadImageNotFlipped() {
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(getClass().getResource("/images/volcano.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return img;
-
+        return loadImageNotFlipped("/images/volcano.png");
     }
 }

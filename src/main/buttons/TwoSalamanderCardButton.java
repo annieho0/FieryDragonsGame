@@ -15,24 +15,11 @@ public class TwoSalamanderCardButton extends CardButton {
 
     @Override
     protected BufferedImage loadImageFlipped() {
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(getClass().getResource("/images/twosalamanders.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return img;
+        return loadImageFlipped("/images/twosalamanders.png");
     }
 
     @Override
     protected BufferedImage loadImageNotFlipped() {
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(getClass().getResource("/images/volcano.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return img;
-
+        return loadImageNotFlipped("/images/volcano.png");
     }
 }

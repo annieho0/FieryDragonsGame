@@ -2,12 +2,14 @@ package main.buttons;
 
 import main.cards.DragonCard;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public abstract class CardButton extends JButton {
     protected DragonCard card;
@@ -15,6 +17,26 @@ public abstract class CardButton extends JButton {
     private BufferedImage image;
 
     private BufferedImage image2;
+
+    protected BufferedImage loadImageFlipped(String imagePath) {
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(getClass().getResource(imagePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return img;
+    }
+
+    protected BufferedImage loadImageNotFlipped(String imagePath) {
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(getClass().getResource(imagePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return img;
+    }
 
     public CardButton(DragonCard card) {
         this.card = card;

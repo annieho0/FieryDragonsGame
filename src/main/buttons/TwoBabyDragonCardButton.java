@@ -15,24 +15,11 @@ public class TwoBabyDragonCardButton extends CardButton {
 
     @Override
     protected BufferedImage loadImageFlipped() {
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(getClass().getResource("/images/twobabydragons.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return img;
+        return loadImageFlipped("/images/twobabydragons.png");
     }
 
     @Override
     protected BufferedImage loadImageNotFlipped() {
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(getClass().getResource("/images/volcano.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return img;
-
+        return loadImageNotFlipped("/images/volcano.png");
     }
 }

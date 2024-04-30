@@ -14,24 +14,11 @@ public class TwoPirateCardButton extends CardButton {
 
     @Override
     protected BufferedImage loadImageFlipped() {
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(getClass().getResource("/images/twopirates.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return img;
+        return loadImageFlipped("/images/twopirates.png");
     }
 
     @Override
     protected BufferedImage loadImageNotFlipped() {
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(getClass().getResource("/images/volcano.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return img;
-
+        return loadImageNotFlipped("/images/volcano.png");
     }
 }

@@ -126,9 +126,6 @@ public class Display extends JFrame {
 
 
 
-
-
-
         board.setPreferredSize(new Dimension(width,height));
         board.setFocusable(false);
 
