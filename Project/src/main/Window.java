@@ -1,5 +1,6 @@
 package main;
 
+import circle.ImageLoader;
 import main.GamePanel;
 
 import javax.swing.*;
@@ -18,7 +19,6 @@ public class Window extends JFrame {
         gamePanel = new GamePanel(); // Initialize the GamePanel
         getContentPane().add(gamePanel);
         pack();
-
         gamePanel.setupGame();
         gamePanel.startGameThread();
 

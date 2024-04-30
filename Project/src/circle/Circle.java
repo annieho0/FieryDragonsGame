@@ -6,13 +6,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-
 public class Circle {
     private int x;
     private int y;
     private int size;
     private BufferedImage image;
     private boolean clicked;
+    private String imagePath;
 
     public Circle(int x, int y, int size) {
         this.x = x;
@@ -20,12 +20,23 @@ public class Circle {
         this.size = size;
         this.clicked = false;
     }
+
+    public String getImage() {
+        return imagePath;
+    }
+
     public void setImage(String imagePath) {
-        try {
-            this.image = ImageIO.read(new File(imagePath));
-        } catch (IOException e) {
-            System.err.println("Error loading image: " + e.getMessage());
-            // Handle the error gracefully, e.g., by setting a default image
+        this.imagePath = imagePath;
+        if (imagePath != null && !imagePath.isEmpty()) {
+            try {
+                this.image = ImageIO.read(new File(imagePath)); // Load the image from file path
+            } catch (IOException e) {
+                this.image = null;
+                System.err.println("Error loading image: " + e.getMessage());
+                // Handle the error gracefully, e.g., by setting a default image or logging the error
+            }
+        } else {
+            this.image = null; // Set the image to null if imagePath is null or empty
         }
     }
 
@@ -33,8 +44,8 @@ public class Circle {
         if (clicked && image != null) {
             g2d.drawImage(image, x, y, size, size, null);
         } else {
-            g2d.setColor(Color.RED);
-            g2d.fillRect(x, y, size, size);
+            g2d.setColor(Color.GRAY);
+            g2d.fillOval(x, y, size, size);
         }
     }
 
@@ -45,9 +56,22 @@ public class Circle {
         return distance <= size / 2;
     }
 
+    public boolean isClicked() {
+        return clicked;
+    }
+
     public void setClicked(boolean clicked) {
         this.clicked = clicked;
     }
+    private int lastImageIndex = -1; // Initialize to -1 to indicate no image
 
+    // Other existing code...
 
+    public int getLastImageIndex() {
+        return lastImageIndex;
+    }
+
+    public void setLastImageIndex(int lastImageIndex) {
+        this.lastImageIndex = lastImageIndex;
+    }
 }

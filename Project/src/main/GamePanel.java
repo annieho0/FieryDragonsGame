@@ -4,11 +4,12 @@ import boardCards.AssetSetter;
 import circle.Circle;
 import tile.TileManager;
 import tokens.DragonCards;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable, MouseListener {
@@ -29,6 +30,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     AssetSetter assetSetter = new AssetSetter(this);
     public DragonCards[] obj = new DragonCards[24];
     Circle[] circles;
+    private ArrayList<Integer> usedCases = new ArrayList<>();
+    ArrayList<String> availableImages = new ArrayList<>();
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -122,46 +125,116 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         }
 
     }
-
     @Override
     public void mouseClicked(MouseEvent e) {
-        // Handle mouse click event
         for (Circle circle : circles) {
             if (circle.contains(e.getX(), e.getY())) {
-                circle.setClicked(true);
-                // Generate a random number to choose between skull, bat, and spider
-                Random random = new Random();
-                int randomNumber = random.nextInt(5); // Generate a random number between 0 and 2
+                if (!circle.isClicked()) {
+                    // Generate random numbers to choose between bat, spider, egg, and lizard
+                    Random random = new Random();
+                    int randomNumber;
 
-                String imagePath;
-                // Choose the image file path based on the random number
-                switch (randomNumber) {
-                    case 0:
-                        imagePath = "Project/res/objects/skull.png";
-                        break;
-                    case 1:
-                        imagePath = "Project/res/objects/bat.gif";
-                        break;
-                    case 2:
-                        imagePath = "Project/res/objects/spider.png";
-                        break;
-                    case 3:
-                        imagePath = "Project/res/objects/egg.png";
-                        break;
-                    case 4:
-                        imagePath = "Project/res/objects/lizard.png";
-                        break;
-                    default:
-                        // Default to skull.png if random number is out of bounds
-                        imagePath = "Project/res/objects/skull.png";
+                    // List of available image paths excluding skull
+                    ArrayList<String> availableImages = new ArrayList<>();
+                    availableImages.add("Project/res/objects/bat.gif");
+                    availableImages.add("Project/res/objects/bat_2.png");
+                    availableImages.add("Project/res/objects/bat_3.png");
+                    availableImages.add("Project/res/objects/spider.png");
+                    availableImages.add("Project/res/objects/spider_2.png");
+                    availableImages.add("Project/res/objects/spider_3.png");
+                    availableImages.add("Project/res/objects/egg.png");
+                    availableImages.add("Project/res/objects/egg_2.png");
+                    availableImages.add("Project/res/objects/egg_3.png");
+                    availableImages.add("Project/res/objects/lizard.png");
+                    availableImages.add("Project/res/objects/lizard_2.png");
+                    availableImages.add("Project/res/objects/lizard_3.png");
+                    availableImages.add("Project/res/objects/skull.png");
+                    availableImages.add("Project/res/objects/skull_2.png");
+                    availableImages.add("Project/res/objects/skull.png");
+                    availableImages.add("Project/res/objects/skull_2.png");
+
+                    do {
+                        randomNumber = random.nextInt(availableImages.size());
+                    } while (usedCases.contains(randomNumber));
+
+                    // Choose the image file path based on the random number
+                    String imagePath = availableImages.get(randomNumber);
+
+                    // Set the image path for the circle
+                    circle.setImage(imagePath);
+
+                    // Add the used case to the list
+                    usedCases.add(randomNumber);
+
+                    // Toggle clicked status
+                    circle.setClicked(true);
                 }
 
-                circle.setImage(imagePath); // Set the randomly chosen image for the clicked circle
                 repaint(); // Update the panel to reflect changes
                 break; // Break loop after clicking the first circle that was clicked
             }
         }
     }
+//    @Override
+//    public void mouseClicked(MouseEvent e) {
+//        for (Circle circle : circles) {
+//            if (circle.contains(e.getX(), e.getY())) {
+//                if (circle.isClicked()) {
+//                    // If the circle is already clicked, change its state back to not clicked
+//                    circle.setClicked(false);
+//
+//                    // Remove the associated image
+//                    circle.setImage(null);
+//
+//                    // Add the used image path back to the available images list
+//                    String imagePath = circle.getImage();
+//                    if (imagePath != null) {
+//                        availableImages.add(imagePath);
+//                    }
+//                } else {
+//                    availableImages.add("Project/res/objects/bat.gif");
+//                    availableImages.add("Project/res/objects/bat_2.png");
+//                    availableImages.add("Project/res/objects/bat_3.png");
+//                    availableImages.add("Project/res/objects/spider.png");
+//                    availableImages.add("Project/res/objects/spider_2.png");
+//                    availableImages.add("Project/res/objects/spider_3.png");
+//                    availableImages.add("Project/res/objects/egg.png");
+//                    availableImages.add("Project/res/objects/egg_2.png");
+//                    availableImages.add("Project/res/objects/egg_3.png");
+//                    availableImages.add("Project/res/objects/lizard.png");
+//                    availableImages.add("Project/res/objects/lizard_2.png");
+//                    availableImages.add("Project/res/objects/lizard_3.png");
+//                    // If the circle is not clicked, set it to clicked
+//                    circle.setClicked(true);
+//
+//                    // If the circle already has an image, do not change it
+//                    // If the circle already has an image, do not change it
+//                    if (circle.getImage() == null) {
+//                        if (!availableImages.isEmpty()) {
+//                            // Generate random numbers to choose between available images
+//                            Random random = new Random();
+//                            int randomNumber = random.nextInt(availableImages.size());
+//
+//                            // Choose the image file path based on the random number
+//                            String imagePath = availableImages.remove(randomNumber);
+//
+//                            // Set the image path for the circle
+//                            circle.setImage(imagePath);
+//                            circle.setLastImageIndex(randomNumber);
+//                        } else {
+//                            // Handle the case when no available images are left
+//                            System.out.println("No available images left.");
+//                            // You can add code here to display a message or reset the available images
+//                        }
+//                    }
+//
+//                repaint(); // Update the panel to reflect changes
+//                break; // Break loop after clicking the first circle that was clicked
+//            }
+//        }
+//    }}
+
+
 
     @Override
     public void mousePressed(MouseEvent e) {
