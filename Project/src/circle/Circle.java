@@ -7,71 +7,60 @@ import java.io.File;
 import java.io.IOException;
 
 public class Circle {
-    private int x;
-    private int y;
-    private int size;
-    private BufferedImage image;
-    private boolean clicked;
-    private String imagePath;
+    private int x, y, size;
+    private String frontImagePath;
+    private String backImagePath;
+    private Image frontImage;
+    private Image backImage;
+    private boolean flipped;
+    private int backImageIndex;
 
     public Circle(int x, int y, int size) {
         this.x = x;
         this.y = y;
         this.size = size;
-        this.clicked = false;
+        this.flipped = false;
+        this.backImageIndex = -1; // Initialize with an invalid index
     }
 
-    public String getImage() {
-        return imagePath;
+    public void setFrontImage(String imagePath) {
+        this.frontImagePath = imagePath;
+        try {
+            this.frontImage = ImageIO.read(new File(frontImagePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void setImage(String imagePath) {
-        this.imagePath = imagePath;
-        if (imagePath != null && !imagePath.isEmpty()) {
-            try {
-                this.image = ImageIO.read(new File(imagePath)); // Load the image from file path
-            } catch (IOException e) {
-                this.image = null;
-                System.err.println("Error loading image: " + e.getMessage());
-                // Handle the error gracefully, e.g., by setting a default image or logging the error
+    public void setBackImage(String imagePath, int index) {
+        this.backImagePath = imagePath;
+        this.backImageIndex = index;
+        try {
+            if (this.backImage == null) { // Load the back image only if it hasn't been loaded before
+                this.backImage = ImageIO.read(new File(backImagePath));
             }
-        } else {
-            this.image = null; // Set the image to null if imagePath is null or empty
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void draw(Graphics2D g2d) {
-        if (clicked && image != null) {
-            g2d.drawImage(image, x, y, size, size, null);
+    public void flip() {
+        flipped = !flipped;
+    }
+
+    public boolean contains(int mx, int my) {
+        return mx >= x && mx <= x + size && my >= y && my <= y + size;
+    }
+
+    public boolean isFlipped() {
+        return flipped;
+    }
+
+    public void draw(Graphics2D g) {
+        if (flipped) {
+            g.drawImage(backImage, x, y, size, size, null);
         } else {
-            g2d.setColor(Color.GRAY);
-            g2d.fillOval(x, y, size, size);
+            g.drawImage(frontImage, x, y, size, size, null);
         }
-    }
-
-    public boolean contains(int clickX, int clickY) {
-        int centerX = x + size / 2;
-        int centerY = y + size / 2;
-        double distance = Math.sqrt(Math.pow(clickX - centerX, 2) + Math.pow(clickY - centerY, 2));
-        return distance <= size / 2;
-    }
-
-    public boolean isClicked() {
-        return clicked;
-    }
-
-    public void setClicked(boolean clicked) {
-        this.clicked = clicked;
-    }
-    private int lastImageIndex = -1; // Initialize to -1 to indicate no image
-
-    // Other existing code...
-
-    public int getLastImageIndex() {
-        return lastImageIndex;
-    }
-
-    public void setLastImageIndex(int lastImageIndex) {
-        this.lastImageIndex = lastImageIndex;
     }
 }

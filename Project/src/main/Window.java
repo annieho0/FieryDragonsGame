@@ -22,6 +22,7 @@ public class Window extends JFrame {
         gamePanel.setupGame();
         gamePanel.startGameThread();
 
+
         setVisible(true);
     }
 
