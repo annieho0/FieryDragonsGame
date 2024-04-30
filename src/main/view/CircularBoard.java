@@ -54,10 +54,11 @@ public class CircularBoard extends JPanel {
 
 
         int caveOffset = (int) (25 / 1.5);
-        Cave northCave = new Cave(getWidth() / 2, outerY - caveOffset, 27, Color.lightGray, Color.pink);
-        Cave southCave = new Cave(getWidth() / 2, outerY + diameter + caveOffset, 27, Color.lightGray, Color.yellow);
-        Cave eastCave = new Cave(outerX + diameter + caveOffset, getHeight() / 2, 27, Color.lightGray, Color.blue);
-        Cave westCave = new Cave(outerX - caveOffset, getHeight() / 2, 27, Color.lightGray, Color.orange);
+        Cave northCave = new Cave(getWidth() / 2, outerY - caveOffset, 27, "/images/greendragon.png", Color.white);
+        Cave southCave = new Cave(getWidth() / 2, outerY + diameter + caveOffset, 27, "/images/bluedragon.png", Color.white);
+        Cave eastCave = new Cave(outerX + diameter + caveOffset, getHeight() / 2, 27, "/images/pinkdragon.png", Color.white);
+        Cave westCave = new Cave(outerX - caveOffset, getHeight() / 2, 27, "/images/purpledragon.png", Color.white);
+
 
 
         northCave.draw(g2d);
