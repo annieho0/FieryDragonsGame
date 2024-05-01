@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact name="untitled folder:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/untitled_folder_jar</output-path>
+  <artifact name="sprint1:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/sprint1_jar</output-path>
     <root id="root">
       <element id="archive" name="untitled folder.jar">
         <element id="module-output" name="untitled folder" />

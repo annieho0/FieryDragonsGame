@@ -2,8 +2,6 @@ package main.view;
 
 import main.buttons.*;
 import main.cards.*;
-import main.view.CircularBoard;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -11,10 +9,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Arrays;
 
+/**
+ * Represents the main display window of the game, Fiery Dragon.
+ * The display contains a circular game board with various cards/buttons placed at randomized positions.
+ */
 public class Display extends JFrame {
 
     private CircularBoard board;
 
+    /**
+     * Constructs a new Display window with the specified dimensions.
+     *
+     * @param width  The width of the display window.
+     * @param height The height of the display window.
+     */
     public Display (int width, int height) {
         setTitle("Fiery Dragon");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -123,8 +131,6 @@ public class Display extends JFrame {
         TwoPirateCardButton twoPirateButton1 = new TwoPirateCardButton(twoPirateCard1);
         twoPirateButton1.setBounds(positions.get(15).x, positions.get(15).y, 50, 50);
         board.add(twoPirateButton1);
-
-
 
         board.setPreferredSize(new Dimension(width,height));
         board.setFocusable(false);
