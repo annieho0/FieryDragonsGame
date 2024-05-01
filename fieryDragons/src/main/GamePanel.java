@@ -1,7 +1,7 @@
 package main;
 
 import boardCards.AssetSetter;
-import circle.Circle;
+import dragonCards.Cards;
 import tile.TileManager;
 import tokens.DragonCards;
 import javax.swing.*;
@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable, MouseListener {
     final int originalTileSize = 16;
@@ -26,7 +25,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     Thread gameThread;
     AssetSetter assetSetter = new AssetSetter(this);
     public DragonCards[] obj = new DragonCards[24];
-    public Circle[] circles;
+    public Cards[] cards;
     public ArrayList<String> availableImages = new ArrayList<>();
 
 
@@ -77,13 +76,13 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                 obj[i].draw(g2, this);
             }
         }
-        if (circles == null) {
+        if (cards == null) {
             initializeCircles();
         }
 
-        // Draw circles
-        for (Circle circle : circles) {
-            circle.draw(g2);
+        // Draw cards
+        for (Cards cards : this.cards) {
+            cards.draw(g2);
         }
 
 
@@ -99,11 +98,11 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
             // Calculate circle radius
             int radius = Math.min(getWidth(), getHeight()) / 5;
 
-            // Initialize circles
+            // Initialize cards
             int numCircles = 16;
             int circleSize = 40;
             double angleStep = 2 * Math.PI / numCircles;
-            circles = new Circle[numCircles];
+            cards = new Cards[numCircles];
 
             // Shuffle the list of available images
             Collections.shuffle(availableImages);
@@ -114,12 +113,12 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                 int circleX = (int) (centerX + radius * Math.cos(angle)) - (circleSize / 2) + xOffset;
                 int yOffset = 25;
                 int circleY = (int) (centerY + radius * Math.sin(angle)) - (circleSize / 2) - yOffset;
-                circles[i] = new Circle(circleX, circleY, circleSize);
+                cards[i] = new Cards(circleX, circleY, circleSize);
                 // Set front image for each circle
-                circles[i].setFrontImage("C:\\Users\\annie\\IdeaProjects\\CL_Monday06pm\\fieryDragons\\res\\objects\\dragon.png");
+                cards[i].setFrontImage("C:\\Users\\annie\\IdeaProjects\\CL_Monday06pm\\fieryDragons\\res\\objects\\dragon.png");
                 // Set back image for each circle from shuffled list
                 String backImagePath = availableImages.get(i);
-                circles[i].setBackImage(backImagePath, i);
+                cards[i].setBackImage(backImagePath, i);
             }
     }
 
@@ -158,11 +157,11 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        for (Circle circle : circles) {
-            if (circle.contains(e.getX(), e.getY())) {
-                circle.flip(); // Toggle the flipped state
+        for (Cards cards : this.cards) {
+            if (cards.contains(e.getX(), e.getY())) {
+                cards.flip(); // Toggle the flipped state
                 repaint(); // Update the panel to reflect changes
-                break; // Break loop after clicking the first circle that was clicked
+                break; // Break loop after clicking the first cards that was clicked
             }
         }
     }

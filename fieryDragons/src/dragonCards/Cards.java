@@ -1,11 +1,11 @@
-package circle;
+package dragonCards;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class Circle {
+public class Cards {
     private int x, y, size;
     private String frontImagePath;
     private String backImagePath;
@@ -14,7 +14,7 @@ public class Circle {
     private boolean flipped;
     private int backImageIndex;
 
-    public Circle(int x, int y, int size) {
+    public Cards(int x, int y, int size) {
         this.x = x;
         this.y = y;
         this.size = size;
@@ -69,11 +69,5 @@ public class Circle {
         }
     }
 
-    public int getX() {
-        return x;
-    }
 
-    public int getY() {
-        return y;
-    }
 }
