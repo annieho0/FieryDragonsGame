@@ -9,9 +9,14 @@ The aim of this sprint is to have the initial gameboard set up and also implemen
 ## How to Run
 Install JDK17 to run the .jar file through java -jar sprint1.jar
 
+## Demo Video Link
+Link: https://youtu.be/6bknuaWBP5Y
+Description of File Format: The link is to a YouTube unlisted video which was uploaded in mp4.
+
 ## Files
 Image files are under the images folder
 Buttons to flip cards are under the buttons folder
 Dragon cards are under the cards folder
 Gameboard display and logic are under view folder
 Artifact is found under out -> artifacts -> sprint1_jar -> sprint1.jar
+

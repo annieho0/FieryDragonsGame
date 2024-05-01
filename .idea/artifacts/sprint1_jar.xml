@@ -2,8 +2,8 @@
   <artifact name="sprint1:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/sprint1_jar</output-path>
     <root id="root">
-      <element id="archive" name="untitled folder.jar">
-        <element id="module-output" name="untitled folder" />
+      <element id="archive" name="sprint1.jar">
+        <element id="module-output" name="sprint1" />
       </element>
     </root>
   </artifact>
