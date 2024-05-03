@@ -5,14 +5,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
-// represents 16 cards in the center of the volcano
-// all should be implemented as circles facing downwards
-// use random int generator to choose a token card
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Random;
 import javax.swing.JPanel;
+
+// represents 16 cards in the center of the volcano
+// all should be implemented as circles facing downwards
+// use random int generator to choose a token card
 
 class TokenCard extends JPanel {
   private final int tileSize;
@@ -50,7 +52,7 @@ class TokenCard extends JPanel {
     Graphics2D g2d = (Graphics2D) g;
     g2d.setColor(Color.ORANGE);
     Random random = new Random();
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 18; i++) {
       int circleDiameter = Math.min(tileSize / 2, tileSize / 2);
       int circleX = random.nextInt(5) + 2;
       int circleY = random.nextInt(5) + 2;

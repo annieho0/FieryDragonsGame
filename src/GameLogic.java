@@ -1,4 +1,3 @@
-import dragons.Dragon;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -117,9 +116,6 @@ public class GameLogic {
 
     frame.setVisible(true);
   }
-
-
-
 
   public void run(TokenCard selectedToken){
     textLabel1.setText("You have selected a " + selectedToken);

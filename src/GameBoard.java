@@ -1,40 +1,29 @@
-import dragons.BlueDragon;
-import dragons.Dragon;
-import dragons.GreenDragon;
-import dragons.PinkDragon;
-import dragons.PurpleDragon;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-// assembles all the volcano cards and token cards and caves
-public class GameBoard extends JPanel{
-  private Dragon[] dragons;
+public class GameBoard extends JPanel {
+
+  private ArrayList<Dragon> dragons = new ArrayList<>();
   private int noOfPlayers;
-  // private VolcanoCard[][] volcanoCards;
   private GameLogic gameLogic;
-  private int tileSize = 85;
+  protected int tileSize = 85;
   private int cols = 9;
   private int rows = 9;
   private JPanel mainPanel;
 
 
-  public GameBoard(int noOfPlayers, GameLogic gameLogic, JPanel mainPanel){
+  public GameBoard(int noOfPlayers, GameLogic gameLogic, JPanel mainPanel) {
     this.noOfPlayers = noOfPlayers;
     this.gameLogic = gameLogic;
-    dragons = new Dragon[]{new BlueDragon(),new PinkDragon(), new PurpleDragon(), new GreenDragon()};
     this.setPreferredSize(new Dimension(cols * tileSize, rows * tileSize));
     this.mainPanel = mainPanel;
   }
@@ -49,107 +38,104 @@ public class GameBoard extends JPanel{
       for (int c = 0; c < cols; c++) {
         Color c1 = (c + r) % 2 == 0 ? new Color(191, 150, 98) : new Color(115, 84, 60);
 
-        if ((r >= 2 && r <= 6) && (c >= 2 && c <= 6)){
+        if ((r >= 2 && r <= 6) && (c >= 2 && c <= 6)) {
           g2d.setColor(Color.BLACK);
         }
         if (r == 1 && (c > 0 && c < 8)) {
           g2d.setColor(c1);
         } else if (r == 7 && (c > 0 && c < 8)) {
           g2d.setColor(c1);
+
         } else if (c == 1 && (r > 0 && r < 8)) {
           g2d.setColor(c1);
+
         } else if (c == 7 && (r > 0 && r < 8)) {
           g2d.setColor(c1);
+
         }
-        if (r == 0 || r == 8 || c == 0 || c == 8){
+        if (r == 0 || r == 8 || c == 0 || c == 8) {
           g2d.setColor(Color.WHITE);
         }
 
         g2d.fillRect(c * tileSize, r * tileSize, tileSize, tileSize);
+
+        // add animal image on each volcano card
+        Animal bat = new Bat(this);
+        Animal spider = new Spider(this);
+        Animal salamander = new Salamander(this);
+        Animal babyDragon = new BabyDragon(this);
+        Animal[] arr1 = {bat, spider, bat, spider, babyDragon, spider, salamander};
+        Animal[] arr2 = {babyDragon, salamander, babyDragon, bat, bat};
+        Animal[] arr3 = {babyDragon, salamander, spider, bat, salamander};
+        Animal[] arr4 = {salamander, babyDragon, salamander, bat, spider, spider, babyDragon};
+
+        addAnimal(arr1[0],g2d,1*tileSize+25,1*tileSize+25);
+        addAnimal(arr1[1],g2d,2*tileSize,1*tileSize+25);
+        addAnimal(arr1[2],g2d,3*tileSize,1*tileSize+25);
+        addAnimal(arr1[3],g2d,4*tileSize,1*tileSize+25);
+        addAnimal(arr1[4],g2d,5*tileSize,1*tileSize+25);
+        addAnimal(arr1[5],g2d,6*tileSize,1*tileSize+25);
+        addAnimal(arr1[6],g2d,7*tileSize-25,1*tileSize+25);
+
+        addAnimal(arr2[0],g2d,1*tileSize+25,2*tileSize);
+        addAnimal(arr2[1],g2d,1*tileSize+25,3*tileSize);
+        addAnimal(arr2[2],g2d,1*tileSize+25,4*tileSize);
+        addAnimal(arr2[3],g2d,1*tileSize+25,5*tileSize);
+        addAnimal(arr2[4],g2d,1*tileSize+25,6*tileSize);
+
+        addAnimal(arr3[0],g2d,7*tileSize-25,2*tileSize);
+        addAnimal(arr3[1],g2d,7*tileSize-25,3*tileSize);
+        addAnimal(arr3[2],g2d,7*tileSize-25,4*tileSize);
+        addAnimal(arr3[3],g2d,7*tileSize-25,5*tileSize);
+        addAnimal(arr3[4],g2d,7*tileSize-25,6*tileSize);
+
+        addAnimal(arr4[0],g2d,1*tileSize+25,7*tileSize-25);
+        addAnimal(arr4[1],g2d,2*tileSize,7*tileSize-25);
+        addAnimal(arr4[2],g2d,3*tileSize,7*tileSize-25);
+        addAnimal(arr4[3],g2d,4*tileSize,7*tileSize-25);
+        addAnimal(arr4[4],g2d,5*tileSize,7*tileSize-25);
+        addAnimal(arr4[5],g2d,6*tileSize,7*tileSize-25);
+        addAnimal(arr4[6],g2d,7*tileSize-25,7*tileSize-25);
       }
     }
 
-    Cave cave = new Cave(tileSize, noOfPlayers);
+    Cave cave = new Cave(tileSize, noOfPlayers, this);
     cave.paintComponent(g);
 
     TokenCard token = new TokenCard(tileSize, gameLogic);
     token.paintComponent(g);
+
   }
 
-  public void construct(){
-    // open new page with four player game board here
-//    JFrame newFrame = new JFrame("Game Board");
-//    newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//    newFrame.setMinimumSize(new Dimension(1000,1000));
-//    newFrame.setLocationRelativeTo(null);
-
-    // Add the GameBoard instance directly to the frame
-    //newFrame.add(this);
-    //newFrame.setVisible(true);
-    //newFrame.setLayout(null);
-
-    // Create a panel to hold the game board and text
-    // JPanel mainPanel = new JPanel(new BorderLayout());
-
+  public void construct() {
     // Add the game board to the center of the main panel
     mainPanel.add(this, BorderLayout.CENTER);
-
-
   }
 
-//    for (int i = 0; i < noOfPlayers; i++){
-//      // add as many dragons as players, one on each cave
-//    }
-//
-//    JPanel outerPanel = new JPanel();
-//    outerPanel.setSize(500, 500);
-//
-//// Create a panel for the bordered grid layout
-//    JPanel borderedPanel = new JPanel(new GridLayout(8,8));
-//
-//    for (int i = 0; i < 49; i++) {
-//      JPanel squarePanel = new JPanel(); // Create a panel for each square
-//      // Add a border only to the outer perimeter squares
-//      if (i < 7 || i % 7 == 0 || i % 7 == 6 || i >= 42) {
-//        squarePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-//      }
-//      borderedPanel.add(squarePanel); // Add the square panel to the bordered panel
-//
-//      // Add the circle to the desired square (e.g., index 24)
-//      if (i == 0 || i == 6 || i == 42 || i == 48) {
-//        squarePanel.setLayout(new BorderLayout());
-//        Cave cave = new Cave();
-//        cave.setBounds(150,200,50,50);
-//        // outerPanel.add(cave);
-//        cave.setVisible(true);
-//        squarePanel.add(cave); // Add the circle to the right of the square
-//      }
-//    }
-//
-//    outerPanel.add(borderedPanel);
-//
-//    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-//    buttonPanel.setPreferredSize(new Dimension(800, 40));
-//
-//    // Add buttons to the button panel
-//    JButton startButton = new JButton("Start Game!");
-//    startButton.addActionListener(new ActionListener() {
-//      @Override
-//      public void actionPerformed(ActionEvent e) {
-//        gameLogic.run(noOfPlayers);
-//      }
-//    });
-//
-//    buttonPanel.add(startButton);
-//
-//// Add the button panel to the bottom of the outer panel
-//    outerPanel.add(buttonPanel, BorderLayout.SOUTH);
-//
-//// Add the outer panel to the newFrame
-//    newFrame.add(outerPanel);
-
-    // need images on each volcano card
-    // need image on each cave
-    // need 16 token cards in the centre
-
+  private void addAnimal(Animal animal, Graphics2D g2d, int x, int y) {
+    int width = tileSize / 3;
+    int height = tileSize / 3;
+    BufferedImage animalImage = loadImage(animal.imagePath);
+    drawImage(g2d, x, y, animalImage, width, height);
   }
+
+  private BufferedImage loadImage(String imagePath) {
+    try {
+      return ImageIO.read(new File(imagePath));
+    } catch (IOException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  private void drawImage(Graphics2D g2d, int x, int y, BufferedImage image, int width, int height) {
+    // Calculate the position to center the resized image within the circle
+    int imageX = x + (tileSize - width) / 2;
+    int imageY = y + (tileSize - height) / 2;
+
+    // Draw the resized image
+    g2d.drawImage(image, imageX, imageY, width, height, null);
+  }
+}
+
+
