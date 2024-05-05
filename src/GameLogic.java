@@ -15,6 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
 
+/***
+ * Class containing all the functionality logic of the game.
+ *
+ * Created by:
+ * @author Navya Balraj
+ */
 public class GameLogic {
   private JFrame frame;
   GameBoard gameBoard;
@@ -24,7 +30,11 @@ public class GameLogic {
   private int noOfPlayers;
   JPanel mainPanel;
 
-
+  /***
+   * Constructor for GameLogic class. This class calls the initiatize method and it initialises the tokens array with all the
+   * possible values of the back of the tokens. This has been hard coded into an array for now as this will mainly be
+   * needed for future implementation.
+   */
 
   public GameLogic(){
     initialize();
@@ -49,6 +59,13 @@ public class GameLogic {
     tokens[15] = "2 Pirate Dragons";
   }
 
+  /***
+   * Initiatise method which creates the first frame asking the players how many players they would like to play with.
+   * This then links to another frame which is the GameBoard for the game.
+   * The formatting for both pages is also done in this method.
+   * Some buttons used for functionality like the "Click Here" button and selecting a random token from the tokens array are
+   * also implemented here.
+   */
   public void initialize(){
     frame = new JFrame();
     frame.setTitle("Fiery Dragons!");
@@ -159,10 +176,24 @@ public class GameLogic {
     frame.setVisible(true);
   }
 
+  /***
+   * Getter for the length of the tokens array.
+   *
+   * @return integer representing the number of items in the tokens array
+   */
   public int getTokensLength(){
     return tokens.length;
   }
-
+  /***
+   * Run method which contains the main functionality of the game. Checks what card the dragon is standing on and compares this
+   * to the token which has been flipped over. If they match, the dragon moves how many spots the selected token states.
+   * A text will appear at the bottom to explain what has happened in the game.
+   * This will then be repeated for each dragon (not implemented yet).
+   * If the animal the dragon is standing on and the flipped token do not match, it will be the next players turn (not implemented
+   * yet). This method is called inside this function infinitely for now as the winning scenario has not yet been implemented.
+   *
+   * @param selectedToken the token which has been flipped over form the centre of the GameBoard (currently selected randomly)
+   */
   public void run(String selectedToken){
     JLabel text = new JLabel("You have selected a token with: " + selectedToken);
     text.setFont(new Font("Arial", Font.BOLD, 18)); // Example font and size
@@ -177,7 +208,6 @@ public class GameLogic {
 
 
     // if dragon card selected has the same animal as where the dragon stands (cave) they can move that many squares.
-
     ArrayList<Dragon> dragons = gameBoard.getDragons();
     Dragon selectedDragon = dragons.get(0);
     Location selectedDragonLocation = selectedDragon.getLocation();

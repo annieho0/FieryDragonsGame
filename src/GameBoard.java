@@ -8,7 +8,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
+/***
+ * GameBoard class which initialises the baard used for this game.
+ *
+ * Created by:
+ * @author Navya Balraj
+ */
 public class GameBoard extends JPanel {
 
   public ArrayList<Dragon> dragons = new ArrayList<>();
@@ -23,20 +28,34 @@ public class GameBoard extends JPanel {
   private ArrayList<Location> animalsLocations = new ArrayList<>();
   private ArrayList<Location> dragonsLocations = new ArrayList<>();
 
-
+  /***
+   * Constructor for GameBoard class.
+   *
+   * @param noOfPlayers integer variable stating how many players will be playing the game
+   * @param gameLogic instance of GameLogic being used to continue the flow of the game
+   * @param mainPanel the panel where the GameBoard will be placed in the frame
+   */
   public GameBoard(int noOfPlayers, GameLogic gameLogic, JPanel mainPanel) {
     this.noOfPlayers = noOfPlayers;
     this.gameLogic = gameLogic;
     this.mainPanel = mainPanel;
     this.setLayout(null);
   }
-
+  /***
+   * Method which paints the GameBoard and all its components like caves, tokens, animal images and dragon images.
+   * A nested for loop is used so that each slot in the GameBoard is accounted for. Firstly the outter border is drawn, then
+   * the centre and outter border is coloured. The caves are then added by passing values into the Cave class.
+   * Tha animal and dragon images are added on the cave and then all around the board at specific locations, followed by the
+   * tokens in the centre.
+   *
+   * @param g represents the graphics context onto which the component should paint its content
+   */
   public void paintComponent(Graphics g) {
     super.paintComponent(g); // Always call super.paintComponent(g) first
 
     Graphics2D g2d = (Graphics2D) g;
 
-    // Draw squares
+    // Draw squares for the outline, outside and middle of the game board all different colours so we can distinguish which is which
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
         Color c1 = (c + r) % 2 == 0 ? new Color(191, 150, 98) : new Color(115, 84, 60);
@@ -60,7 +79,7 @@ public class GameBoard extends JPanel {
         setOpaque(false);
 
 
-        // caves
+        // add caves onto the board (pre calculated locations)
         if (r == 1 && c == 4) {
           int xPos = c * tileSize;
           int yPos = r * tileSize - tileSize / 2;
@@ -127,7 +146,7 @@ public class GameBoard extends JPanel {
     }
   }
 
-    // add animal image on each volcano card
+    // add animal image on each volcano card (pre calculated locations)
     // top row
     int bat1col = 1;
     int bat1row = 1;
@@ -236,13 +255,22 @@ public class GameBoard extends JPanel {
     mainPanel.add(token);
   }
 
-
+  /***
+   * Construct method which is called from the GameLogic class so that the GameBoard is added to the mainPanel of the frame.
+   */
   public void construct() {
     // Add the game board to the center of the main panel
     mainPanel.add(this, BorderLayout.CENTER);
 
   }
-
+  /***
+   * Method which adds the images of animals onto the GameBoard at specific locations.
+   *
+   * @param animal which is being added onto the board
+   * @param g2d Graphics object passed to the method is actually an instance of Graphics2D
+   * @param xPos the x value of the position of the Animal
+   * @param yPos the y value of the position of the Animal
+   */
   private void addAnimal(Animal animal, Graphics2D g2d, int xPos, int yPos) {
     int width = tileSize / 3;
     int height = tileSize / 3;
@@ -251,7 +279,12 @@ public class GameBoard extends JPanel {
     animals.add(animal);
     animalsLocations.add(animal.getLocation());
   }
-
+  /***
+   * Method which loads an image from its file path.
+   *
+   * @param imagePath link where the image is
+   * @return BufferedImage version of the file which can be read and entered onto the GameBoard
+   */
   private BufferedImage loadImage(String imagePath) {
     try {
       return ImageIO.read(new File(imagePath));
@@ -260,7 +293,16 @@ public class GameBoard extends JPanel {
       return null;
     }
   }
-
+  /***
+   * Method which draws the image onto the GameBoard at the specified location.
+   *
+   * @param g2d Graphics object passed to the method is actually an instance of Graphics2D
+   * @param xPos the x value of the Location of the Dragon
+   * @param yPos the y value of the Location of the Dragon
+   * @param image output from loadImage function which can be entered on a frame
+   * @param width of the image on the GameBoard
+   * @param height of the image on the GameBoard
+   */
   private void drawImage(Graphics2D g2d, int xPos, int yPos, BufferedImage image, int width, int height) {
     // Calculate the position to center the resized image within the circle
     int imageX = xPos + (tileSize - width) / 2;
@@ -269,7 +311,11 @@ public class GameBoard extends JPanel {
     // Draw the resized image
     g2d.drawImage(image, imageX, imageY, width, height, null);
   }
-
+  /***
+   * Getter for dragon at specfic Locations.
+   *
+   * @return Dragon at that Location
+   */
   public Dragon getDragon(Location location) {
     for (Dragon dragon : dragons) {
       if (dragon.getLocation().equals(location)) {
@@ -278,11 +324,22 @@ public class GameBoard extends JPanel {
     }
     return null;
   }
-
+  /***
+   * Getter for the dragons ArrayList.
+   *
+   * @return ArrayList of all the Dragons on the GameBoard
+   */
   public ArrayList<Dragon> getDragons() {
     return dragons;
   }
-
+  /***
+   * Method which adds the images of animals onto caves.
+   *
+   * @param animal which is being added onto the board
+   * @param g2d Graphics object passed to the method is actually an instance of Graphics2D
+   * @param xPos the x value of the position of the Animal
+   * @param yPos the y value of the position of the Animal
+   */
   private void addAnimalForCave(Animal animal, Graphics2D g2d, int xPos, int yPos){
     int width = tileSize / 3;
     int height = tileSize / 3;
@@ -292,7 +349,14 @@ public class GameBoard extends JPanel {
     animalsLocations.add(animal.getLocation());
   }
 
-
+  /***
+   * Method which adds the images of dragons onto the GameBoard at specific locations.
+   *
+   * @param dragon which is being added onto the board
+   * @param g2d Graphics object passed to the method is actually an instance of Graphics2D
+   * @param xPos the x value of the position of the Dragon
+   * @param yPos the y value of the position of the Dragon
+   */
   private void addDragon(Dragon dragon, Graphics2D g2d, int xPos, int yPos){
     int width = tileSize / 3;
     int height = tileSize / 3;
@@ -301,11 +365,19 @@ public class GameBoard extends JPanel {
     dragons.add(dragon);
     dragonsLocations.add(dragon.getLocation());
   }
-
+  /***
+   * Getter for the animals ArrayList.
+   *
+   * @return ArrayList of all the Animals on the GameBoard
+   */
   public ArrayList<Animal> getAnimals() {
     return animals;
   }
-
+  /***
+   * Getter for the animalsLocations ArrayList.
+   *
+   * @return ArrayList of Locations of all the Animals
+   */
   public ArrayList<Location> getAnimalsLocations() {
     return animalsLocations;
   }

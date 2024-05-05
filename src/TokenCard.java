@@ -5,9 +5,12 @@ import javax.swing.JPanel;
 import java.awt.Graphics2D;
 import java.util.Random;
 
-// represents 16 cards in the center of the volcano
-// all should be implemented as circles facing downwards
-// use random int generator to choose a token card
+/***
+ * TokenCard class used to represent the 16 cards in the centre of the valcano GameBoard.
+ *
+ * Created by:
+ * @author Navya Balraj
+ */
 
 class TokenCard extends JPanel {
   private final int tileSize;
@@ -15,12 +18,23 @@ class TokenCard extends JPanel {
 
   ArrayList<Integer> randomInts;
 
+  /***
+   * Constructor for TokenCard class.
+   *
+   * @param tileSize the units used in the GameBoard to indicate one location
+   * @param gameLogic an instance of the class holding all the functionality for the logic of the game
+   */
   public TokenCard(int tileSize, GameLogic gameLogic) {
     this.tileSize = tileSize;
     this.gameLogic = gameLogic;
     randomInts = createRandomArray();
   }
 
+  /***
+   * Method which put 2 random integers in the ArrayList per token which will be used as the x and y coordinates of the Tokens.
+   *
+   * @return an ArrayList of randomly selected Integers which will be used as locations for the tokens
+   */
   public ArrayList<Integer> createRandomArray(){
     Random random = new Random();
     ArrayList<Integer> randomInts = new ArrayList<>();
@@ -30,6 +44,11 @@ class TokenCard extends JPanel {
     return randomInts;
   }
 
+  /***
+   * Method which paints the circular tokens in the centre of the GameBoard at random preselected locations.
+   *
+   * @param g represents the graphics context onto which the component should paint its content
+   */
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
