@@ -5,6 +5,11 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
 public class Cards {
     private int x, y, size;
     private String frontImagePath;
@@ -25,12 +30,13 @@ public class Cards {
     public void setFrontImage(String imagePath) {
         this.frontImagePath = imagePath;
         try {
-            this.frontImage = ImageIO.read(new File(frontImagePath));
+            this.frontImage = ImageIO.read(getClass().getResourceAsStream(frontImagePath));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public String getFrontImage(){
+
+    public String getFrontImage() {
         return frontImagePath;
     }
 
@@ -39,13 +45,14 @@ public class Cards {
         this.backImageIndex = index;
         try {
             if (this.backImage == null) { // Load the back image only if it hasn't been loaded before
-                this.backImage = ImageIO.read(new File(backImagePath));
+                this.backImage = ImageIO.read(getClass().getResourceAsStream(backImagePath));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public String getBackImage(){
+
+    public String getBackImage() {
         return backImagePath;
     }
 
@@ -68,6 +75,5 @@ public class Cards {
             g.drawImage(frontImage, x, y, size, size, null);
         }
     }
-
-
 }
+
