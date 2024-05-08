@@ -10,7 +10,7 @@ public class FindCoordinatesWithValue {
     public FindCoordinatesWithValue() {
         // Specify the path to your text file
         // String filePath = "fieryDragons/res/maps/map.txt";
-        String absolutePath = "C:\\Users\\annie\\IdeaProjects\\CL_Monday06pm\\fieryDragons\\res\\maps\\map.txt";
+        String absolutePath = "/maps/map.txt";
         //File file = new File(absolutePath);
 
 
