@@ -36,22 +36,22 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addMouseListener(this);
-        availableImages.add("\\fieryDragons\\res\\objects\\bat.gif");
-        availableImages.add("\\fieryDragons\\res\\objects\\bat_2.png");
-        availableImages.add("\\fieryDragons\\res\\objects\\bat_3.png");
-        availableImages.add("\\fieryDragons\\res\\objects\\spider.png");
-        availableImages.add("\\fieryDragons\\res\\objects\\spider_2.png");
-        availableImages.add("\\fieryDragons\\res\\objects\\spider_3.png");
-        availableImages.add("\\fieryDragons\\res\\objects\\egg.png");
-        availableImages.add("\\fieryDragons\\res\\objects\\egg_2.png");
-        availableImages.add("\\fieryDragons\\res\\objects\\egg_3.png");
-        availableImages.add("\\fieryDragons\\res\\objects\\lizard.png");
-        availableImages.add("\\fieryDragons\\res\\objects\\lizard_2.png");
-        availableImages.add("\\fieryDragons\\res\\objects\\lizard_3.png");
-        availableImages.add("\\fieryDragons\\res\\objects\\skull.png");
-        availableImages.add("\\fieryDragons\\res\\objects\\skull_2.png");
-        availableImages.add("\\fieryDragons\\res\\objects\\skull.png");
-        availableImages.add("\\fieryDragons\\res\\objects\\skull_2.png");
+        availableImages.add("/objects/bat.gif");
+        availableImages.add("/objects/bat_2.png");
+        availableImages.add("/objects/bat_3.png");
+        availableImages.add("/objects/spider.png");
+        availableImages.add("/objects/spider_2.png");
+        availableImages.add("/objects/spider_3.png");
+        availableImages.add("/objects/egg.png");
+        availableImages.add("/objects/egg_2.png");
+        availableImages.add("/objects/egg_3.png");
+        availableImages.add("/objects/lizard.png");
+        availableImages.add("/objects/lizard_2.png");
+        availableImages.add("/objects/lizard_3.png");
+        availableImages.add("/objects/skull.png");
+        availableImages.add("/objects/skull_2.png");
+        availableImages.add("/objects/skull.png");
+        availableImages.add("/objects/skull_2.png");
 
     }
     public void setupGame(){
@@ -115,7 +115,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                 int circleY = (int) (centerY + radius * Math.sin(angle)) - (circleSize / 2) - yOffset;
                 cards[i] = new Cards(circleX, circleY, circleSize);
                 // Set front image for each circle
-                cards[i].setFrontImage("\\fieryDragons\\res\\objects\\dragon.png");
+                cards[i].setFrontImage("/objects/dragon.png");
                 // Set back image for each circle from shuffled list
                 String backImagePath = availableImages.get(i);
                 cards[i].setBackImage(backImagePath, i);
