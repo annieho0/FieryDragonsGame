@@ -55,7 +55,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     }
     public void setupGame(){
-        assetSetter.setObject();
+        AssetSetter.setObject();
     }
     public void startGameThread(){
         gameThread = new Thread(this);

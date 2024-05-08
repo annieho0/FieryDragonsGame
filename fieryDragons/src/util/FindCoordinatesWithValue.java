@@ -1,78 +1,54 @@
 package util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FindCoordinatesWithValue {
-    private boolean[][] coordinatesWithOne;
+    private List<int[]> coordinatesWithOne;
 
     public FindCoordinatesWithValue() {
-        // Specify the path to your text file
-        // String filePath = "fieryDragons/res/maps/map.txt";
-        String absolutePath = "/maps/map.txt";
-        //File file = new File(absolutePath);
+        String mapPath = "/maps/map.txt";
 
+        // Read the text file
+        InputStream is = getClass().getResourceAsStream(mapPath);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
         try {
-            // Read the text file
-            File file = new File(absolutePath);
-            Scanner scanner = new Scanner(file);
+            coordinatesWithOne = new ArrayList<>();
 
-            // Initialize coordinatesWithOne array
-            int rows = countRows(file);
-            int cols = countCols(file);
-            coordinatesWithOne = new boolean[rows][cols];
-
+            // Read each line of the file
+            String line;
             int row = 0;
-
-            // Loop through each line in the file
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] values = line.split(" ");
-
-                // Loop through each value in the line
-                // Loop through each value in the line
-                for (int col = 0; col < values.length; col++) {
-                    // Check if the value is not empty and is equal to 1
-                    if (!values[col].isEmpty() && Integer.parseInt(values[col]) == 1) {
-                        coordinatesWithOne[row][col] = true;
+            while ((line = br.readLine()) != null) {
+                // Split the line into characters
+                String[] chars = line.split(" ");
+                for (int col = 0; col < chars.length; col++) {
+                    // Check if the character is '01'
+                    if (chars[col].equals("01")) {
+                        // If '01' is found, add its coordinates to the list
+                        coordinatesWithOne.add(new int[]{row, col});
                     }
                 }
-
                 row++;
             }
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found.");
+
+            // Close the BufferedReader
+            br.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // Method to count the number of rows in the file
-    private int countRows(File file) throws FileNotFoundException {
-        Scanner scanner = new Scanner(file);
-        int rows = 0;
-        while (scanner.hasNextLine()) {
-            scanner.nextLine();
-            rows++;
-        }
-        scanner.close();
-        return rows;
-    }
-
-    // Method to count the number of columns in the file
-    private int countCols(File file) throws FileNotFoundException {
-        Scanner scanner = new Scanner(file);
-        String line = scanner.nextLine();
-        int cols = line.split(" ").length;
-        scanner.close();
-        return cols;
-    }
-
-    // Getter method to retrieve the coordinatesWithOne array
-    public boolean[][] getCoordinatesWithOne() {
+    public List<int[]> getCoordinatesWithOne() {
         return coordinatesWithOne;
     }
+
+    public static void main(String[] args) {
+        new FindCoordinatesWithValue();
+    }
 }
+
 

@@ -1,149 +1,70 @@
 package boardCards;
 
-
 import main.GamePanel;
 import tokens.*;
 import util.FindCoordinatesWithValue;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
-
 
 public class AssetSetter {
     private static GamePanel gp;
-    private static Random rand;
     private static FindCoordinatesWithValue findcoor;
 
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
-        rand = new Random();
         findcoor = new FindCoordinatesWithValue();
+
     }
+
     public static void setObject() {
-        boolean[][] coordinatesWithOne = findcoor.getCoordinatesWithOne();
+        List<int[]> coordinatesWithOne = findcoor.getCoordinatesWithOne();
+        Collections.shuffle(coordinatesWithOne);
 
-        // Create a list of all valid coordinates
-        ArrayList<Coordinate> validCoordinates = new ArrayList<>();
-        for (int row = 0; row < coordinatesWithOne.length; row++) {
-            for (int col = 0; col < coordinatesWithOne[0].length; col++) {
-                if (coordinatesWithOne[row][col]) {
-                    validCoordinates.add(new Coordinate(row, col));
-                }
+        // Track the count of placed objects
+        int spiderCount = 0;
+        int batCount = 0;
+        int eggCount = 0;
+        int lizardCount = 0;
+
+        // Place objects on each coordinate with value 1
+        for (int[] coordinate : coordinatesWithOne) {
+            int row = coordinate[0];
+            int col = coordinate[1];
+
+            // Choose the object type to place based on the count of each object
+            if (spiderCount < 6) {
+                placeObject(new OBJ_Spider(), row, col);
+                spiderCount++;
+            } else if (batCount < 6) {
+                placeObject(new OBJ_Bat(), row, col);
+                batCount++;
+            } else if (eggCount < 6) {
+                placeObject(new OBJ_Egg(), row, col);
+                eggCount++;
+            } else if (lizardCount < 6) {
+                placeObject(new OBJ_Lizard(), row, col);
+                lizardCount++;
             }
         }
-
-        // Shuffle the list of coordinates
-        Collections.shuffle(validCoordinates);
-
-        // Place objects on each coordinate
-        placeObjects(validCoordinates);
     }
 
-    private static void placeObjects(ArrayList<Coordinate> validCoordinates) {
-        int numObjectsPerType = 6; // Each object type appears six times
-        int totalObjects = 4 * numObjectsPerType; // Total number of objects to be placed
-        int objectIndex = 0;
-
-        // Place spiders
-        for (int i = 0; i < numObjectsPerType; i++) {
-            gp.obj[objectIndex] = new OBJ_Spider();
-            Coordinate coordinate = findValidSpiderCoordinate(validCoordinates, objectIndex);
-            gp.obj[objectIndex].x = coordinate.col * gp.tileSize;
-            gp.obj[objectIndex].y = coordinate.row * gp.tileSize;
-            objectIndex++;
+    private static void placeObject(DragonCards object, int row, int col) {
+        int index = 0;
+        while (gp.obj[index] != null && index < gp.obj.length) {
+            index++;
         }
 
-        // Place bats
-        for (int i = 0; i < numObjectsPerType; i++) {
-            gp.obj[objectIndex] = new OBJ_Bat();
-            Coordinate coordinate = findValidBatCoordinate(validCoordinates);
-            gp.obj[objectIndex].x = coordinate.col * gp.tileSize;
-            gp.obj[objectIndex].y = coordinate.row * gp.tileSize;
-            objectIndex++;
-        }
-
-        // Place eggs
-        for (int i = 0; i < numObjectsPerType; i++) {
-            gp.obj[objectIndex] = new OBJ_Egg();
-            Coordinate coordinate = validCoordinates.remove(0);
-            gp.obj[objectIndex].x = coordinate.col * gp.tileSize;
-            gp.obj[objectIndex].y = coordinate.row * gp.tileSize;
-            objectIndex++;
-        }
-
-        // Place lizards
-        for (int i = 0; i < numObjectsPerType; i++) {
-            gp.obj[objectIndex] = new OBJ_Lizard();
-            Coordinate coordinate = validCoordinates.remove(0);
-            gp.obj[objectIndex].x = coordinate.col * gp.tileSize;
-            gp.obj[objectIndex].y = coordinate.row * gp.tileSize;
-            objectIndex++;
+        // Check if there is space available in gp.obj array
+        if (index < gp.obj.length) {
+            // Set the object's coordinates
+            gp.obj[index] = object;
+            gp.obj[index].x = col * gp.tileSize;
+            gp.obj[index].y = row * gp.tileSize;
+        } else {
+            System.out.println("No space available in gp.obj array to place object.");
         }
     }
-
-
-    private static Coordinate findValidSpiderCoordinate(ArrayList<Coordinate> validCoordinates, int index) {
-        for (Coordinate coordinate : validCoordinates) {
-            if (!isAdjacentToAnySpider(coordinate)) {
-                validCoordinates.remove(coordinate);
-                return coordinate;
-            }
-        }
-        // If no suitable coordinate is found, return the first available coordinate
-        return validCoordinates.remove(0);
-    }
-
-    private static Coordinate findValidBatCoordinate(ArrayList<Coordinate> validCoordinates) {
-        for (Coordinate coordinate : validCoordinates) {
-            if (!isAdjacentToAnyBat(coordinate) && !isAdjacentToAnySpider(coordinate)) {
-                validCoordinates.remove(coordinate);
-                return coordinate;
-            }
-        }
-        // If no suitable coordinate is found, return the first available coordinate
-        return validCoordinates.remove(0);
-    }
-
-    private static boolean isAdjacentToAnySpider(Coordinate coordinate) {
-        for (DragonCards spider : gp.obj) {
-            if (spider != null && spider instanceof OBJ_Spider && isAdjacent(coordinate, (OBJ_Spider) spider)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean isAdjacentToAnyBat(Coordinate coordinate) {
-        for (DragonCards bat : gp.obj) {
-            if (bat != null && bat instanceof OBJ_Bat && isAdjacent(coordinate, (OBJ_Bat) bat)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean isAdjacent(Coordinate coord1, OBJ_Spider obj) {
-        int dx = Math.abs(obj.x - coord1.col * gp.tileSize);
-        int dy = Math.abs(obj.y - coord1.row * gp.tileSize);
-        return (dx <= gp.tileSize && dy <= gp.tileSize);
-    }
-
-    private static boolean isAdjacent(Coordinate coord1, OBJ_Bat obj) {
-        int dx = Math.abs(obj.x - coord1.col * gp.tileSize);
-        int dy = Math.abs(obj.y - coord1.row * gp.tileSize);
-        return (dx <= gp.tileSize && dy <= gp.tileSize);
-    }
-
-    private static class Coordinate {
-        int row;
-        int col;
-
-        Coordinate(int row, int col) {
-            this.row = row;
-            this.col = col;
-        }
-    }
-
 }
+
