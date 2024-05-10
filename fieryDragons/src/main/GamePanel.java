@@ -2,6 +2,7 @@ package main;
 
 import boardCards.AssetSetter;
 import dragonCards.Cards;
+import player.*;
 import tile.TileManager;
 import tokens.DragonCards;
 import javax.swing.*;
@@ -20,7 +21,10 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     //FPS
     int fps = 60;
-
+    GreenDragon greenDragon = new GreenDragon(this,12,12);
+    BlueDragon blueDragon = new BlueDragon(this, 12, 2);
+    PinkDragon pinkDragon = new PinkDragon(this, 4, 12);
+    PurpleDragon purpleDragon = new PurpleDragon(this, 4, 2);
     TileManager tileManager = new TileManager(this);
     Thread gameThread;
     AssetSetter assetSetter = new AssetSetter(this);
@@ -62,14 +66,14 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         gameThread.start();
     }
     public void update() {
+        greenDragon.update();
 
     }
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
-        g2.setColor(Color.WHITE);
-        g2.fillRect(100, 100, tileSize, tileSize);
+
         tileManager.draw(g2);
         for(int i = 0; i < obj.length; i++){
             if(obj[i] != null){
@@ -84,7 +88,10 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         for (Cards cards : this.cards) {
             cards.draw(g2);
         }
-
+        greenDragon.draw(g2);
+        blueDragon.draw(g2);
+        pinkDragon.draw(g2);
+        purpleDragon.draw(g2);
 
         g2.dispose();
 
