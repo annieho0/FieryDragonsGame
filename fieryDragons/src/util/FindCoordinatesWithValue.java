@@ -46,9 +46,7 @@ public class FindCoordinatesWithValue {
         return coordinatesWithOne;
     }
 
-    public static void main(String[] args) {
-        new FindCoordinatesWithValue();
-    }
+
 }
 
 
