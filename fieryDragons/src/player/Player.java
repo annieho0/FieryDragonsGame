@@ -40,6 +40,13 @@ public abstract class Player extends Entity{
         y = positionY * gp.tileSize;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }
 //    GamePanel gp;
 //    public Player(GamePanel gp){

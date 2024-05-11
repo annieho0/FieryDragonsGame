@@ -5,12 +5,16 @@ import dragonCards.Cards;
 import player.*;
 import tile.TileManager;
 import tokens.DragonCards;
+import util.FindCoordinatesWithValue;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class GamePanel extends JPanel implements Runnable, MouseListener {
     final int originalTileSize = 16;
@@ -24,6 +28,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     GreenDragon greenDragon = new GreenDragon(this,12,12);
     BlueDragon blueDragon = new BlueDragon(this, 12, 2);
     PinkDragon pinkDragon = new PinkDragon(this, 4, 12);
+    private boolean isFirstClick = true;
     PurpleDragon purpleDragon = new PurpleDragon(this, 4, 2);
     TileManager tileManager = new TileManager(this);
     Thread gameThread;
@@ -31,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     public DragonCards[] obj = new DragonCards[24];
     public Cards[] cards;
     public ArrayList<String> availableImages = new ArrayList<>();
-
+    private List<int[]> coordinatesWithOne;
 
     public GamePanel(){
         int screenWidth = tileSize * maxScreenCol;
@@ -57,6 +62,23 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         availableImages.add("/objects/skull.png");
         availableImages.add("/objects/skull_2.png");
 
+        FindCoordinatesWithValue coordinatesFinder = new FindCoordinatesWithValue();
+        coordinatesWithOne = coordinatesFinder.getCoordinatesWithOne();
+        sortCoordinatesClockwise();
+
+    }
+    private void sortCoordinatesClockwise() {
+        // Calculate the center point of the grid
+        int centerX = maxScreenCol / 2;
+        int centerY = maxScreenRow / 2;
+
+        // Sort coordinates based on their angle from the center in the opposite order
+        Collections.sort(coordinatesWithOne, (a, b) -> {
+            double angleA = Math.atan2(a[1] - centerY, a[0] - centerX);
+            double angleB = Math.atan2(b[1] - centerY, b[0] - centerX);
+            // Reverse the comparison to sort in counterclockwise order
+            return Double.compare(angleB, angleA);
+        });
     }
     public void setupGame(){
         AssetSetter.setObject();
@@ -161,15 +183,29 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         }
 
     }
-
+    private int dragonPositionIndex = -1;
     @Override
     public void mouseClicked(MouseEvent e) {
-        for (Cards cards : this.cards) {
-            if (cards.contains(e.getX(), e.getY())) {
-                cards.flip(); // Toggle the flipped state
-                pinkDragon.setCurrentPosition(5,10);
+//        for (Cards cards : this.cards) {
+//            if (cards.contains(e.getX(), e.getY())) {
+//                cards.flip(); // Toggle the flipped state
+//                pinkDragon.setCurrentPosition(5,10);
+//                repaint(); // Update the panel to reflect changes
+//                break; // Break loop after clicking the first cards that was clicked
+//            }
+//        }
+        for (Cards card : this.cards) {
+            if (card.contains(e.getX(), e.getY())) {
+                card.flip(); // Toggle the flipped state
+
+                // Move to the next position clockwise
+                dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
+                int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
+
+                // Set the current position of the pink dragon
+                pinkDragon.setCurrentPosition(nextPosition[1], nextPosition[0]); // Coordinates are flipped in the list
+
                 repaint(); // Update the panel to reflect changes
-                break; // Break loop after clicking the first cards that was clicked
             }
         }
     }
