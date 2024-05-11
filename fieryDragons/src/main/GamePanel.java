@@ -167,6 +167,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         for (Cards cards : this.cards) {
             if (cards.contains(e.getX(), e.getY())) {
                 cards.flip(); // Toggle the flipped state
+                pinkDragon.setCurrentPosition(5,10);
                 repaint(); // Update the panel to reflect changes
                 break; // Break loop after clicking the first cards that was clicked
             }

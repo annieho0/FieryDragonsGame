@@ -35,6 +35,10 @@ public abstract class Player extends Entity{
         x = startX * gp.tileSize;
         y = startY * gp.tileSize;
     }
+    public void setCurrentPosition(int positionX, int positionY){
+        x = positionX * gp.tileSize;
+        y = positionY * gp.tileSize;
+    }
 
 }
 //    GamePanel gp;
