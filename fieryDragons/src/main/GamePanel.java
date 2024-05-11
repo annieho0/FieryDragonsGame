@@ -66,6 +66,13 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         coordinatesWithOne = coordinatesFinder.getCoordinatesWithOne();
         sortCoordinatesClockwise();
 
+        for (int i = 0; i < coordinatesWithOne.size(); i++) {
+            if (coordinatesWithOne.get(i)[0] == 11 && coordinatesWithOne.get(i)[1] == 6) {
+                dragonPositionIndex = i;
+                break;
+            }
+        }
+
     }
     private void sortCoordinatesClockwise() {
         // Calculate the center point of the grid
