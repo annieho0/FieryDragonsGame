@@ -193,28 +193,29 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     private int dragonPositionIndex = -1;
     @Override
     public void mouseClicked(MouseEvent e) {
-//        for (Cards cards : this.cards) {
-//            if (cards.contains(e.getX(), e.getY())) {
-//                cards.flip(); // Toggle the flipped state
-//                pinkDragon.setCurrentPosition(5,10);
-//                repaint(); // Update the panel to reflect changes
-//                break; // Break loop after clicking the first cards that was clicked
-//            }
-//        }
         for (Cards card : this.cards) {
             if (card.contains(e.getX(), e.getY())) {
-                card.flip(); // Toggle the flipped state
+                // Check if the card is flipped
+                boolean isFlipped = card.isFlipped();
 
-                // Move to the next position clockwise
-                dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
-                int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
+                // Flip the card (toggle the flipped state)
+                card.flip();
 
-                // Set the current position of the pink dragon
-                pinkDragon.setCurrentPosition(nextPosition[1], nextPosition[0]); // Coordinates are flipped in the list
+                // Only move the dragon if the card is being flipped to its flipped state
+                if (!isFlipped) {
+                    // Move to the next position clockwise
+                    dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
+                    int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
 
-                repaint(); // Update the panel to reflect changes
+                    // Set the current position of the pink dragon
+                    pinkDragon.setCurrentPosition(nextPosition[1], nextPosition[0]); // Coordinates are flipped in the list
+
+                    // Update the panel to reflect changes
+                    repaint();
+                }
             }
         }
+
     }
 
     @Override
