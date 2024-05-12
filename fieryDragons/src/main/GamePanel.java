@@ -11,11 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-
 
 
 public class GamePanel extends JPanel implements Runnable, MouseListener {
@@ -194,7 +191,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     }
     private boolean isMatch(String cardImage, String dragonImage) {
-        System.out.println(getBaseName(cardImage));
+        System.out.println(getBaseName(cardImage) + getBaseName(dragonImage));
         // Check if the card image matches the dragon card/tile image
         return cardImage.contains(getBaseName(dragonImage));
     }
@@ -232,48 +229,70 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
                 // Only move the dragon if the card is being flipped to its flipped state
                 if (!isFlipped) {
-                    // Check if the flipped card's image matches one of the predefined asset names
-                    String[] assetNames = {"spider", "bat", "egg", "lizard"};
-                    boolean contain = false;
 
-                    for (String name : assetNames) {
-                        if (card.getBackImage().toLowerCase().contains(name)) {
-                            contain = true;
-                            break;
-                        }
-                    }
-
-                    if (contain) {
-                        int[] nextPosition = coordinatesWithOne.get((dragonPositionIndex + 1) % coordinatesWithOne.size());
+                    int[] nextPosition = coordinatesWithOne.get((dragonPositionIndex + 1) % coordinatesWithOne.size());
 //                        int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
-                        String cardImage = card.getBackImage().trim().toLowerCase();
-                        System.out.println(cardImage);
-                        String dragonImage = getDragonCardImage(nextPosition);
+                    String cardImage = card.getBackImage().trim().toLowerCase();
+                    String dragonImage = getDragonCardImage(nextPosition);
+                    if (isMatch(cardImage, dragonImage)) {
+                        System.out.println((cardImage + dragonImage));
+                        if (cardImage.contains("2")) {
 
-                        if (isMatch(cardImage, dragonImage)) {
+                                dragonPositionIndex = (dragonPositionIndex + 2) % coordinatesWithOne.size();
+                                nextPosition = coordinatesWithOne.get(dragonPositionIndex);
+                                dragonImage = getDragonCardImage(nextPosition);
+                                if (isMatch(cardImage, dragonImage)) {
+                                    moveDragonToPosition(nextPosition);
+                                }else{
+                                    dragonPositionIndex = (dragonPositionIndex - 2) % coordinatesWithOne.size();
+
+                                }
+
+
+                        } else if (cardImage.contains("3")) {
+
+                            dragonPositionIndex = (dragonPositionIndex + 2) % coordinatesWithOne.size();
+                            nextPosition = coordinatesWithOne.get(dragonPositionIndex);
+                            dragonImage = getDragonCardImage(nextPosition);
+                            if (isMatch(cardImage, dragonImage)) {
+                                dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
+                                nextPosition = coordinatesWithOne.get(dragonPositionIndex);
+                                dragonImage = getDragonCardImage(nextPosition);
+                                if (isMatch(cardImage, dragonImage)){
+                                    moveDragonToPosition(nextPosition);
+                                }else {
+                                    dragonPositionIndex = (dragonPositionIndex - 3) % coordinatesWithOne.size();
+                                }
+
+                            }else{
+                                dragonPositionIndex = (dragonPositionIndex - 2) % coordinatesWithOne.size();
+
+                            }
+
+
+                        }else {
                             dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
                             nextPosition = coordinatesWithOne.get(dragonPositionIndex);
-                            // Move the dragon
                             moveDragonToPosition(nextPosition);
-
                         }
 
-                    } else {
+                    }if (dragonOnBoard) {
                         // If the flipped card's image is not in assetNames, move the dragon back
                         // Check if the image name contains "1" or "2" and move accordingly
-                        if (dragonOnBoard) {
+                        if (cardImage.contains("skull")) {
                             int movement = 1;
                             if (card.getBackImage().contains("2")) {
                                 movement = 2;
                             }
                             // Move the dragon back by the specified number of tiles
                             dragonPositionIndex = (dragonPositionIndex - movement + coordinatesWithOne.size()) % coordinatesWithOne.size();
-                            int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
+                            nextPosition = coordinatesWithOne.get(dragonPositionIndex);
                             pinkDragon.setCurrentPosition(nextPosition[1], nextPosition[0]); // Coordinates are flipped in the list
                             // Update the panel to reflect changes
                             repaint();
                         }
                     }
+
                 }
             }
         }
