@@ -214,7 +214,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                     if (index >= 0 && index < obj.length) {
                         DragonCards dragon = obj[index];
                         // Check if the dragon object exists and matches the flipped card's image
-                        if (dragon != null && card.getBackImage().equals(dragon.getImagePath())) {
+                        if (dragon != null && card.getBackImage().equalsIgnoreCase(dragon.getImagePath().trim())) {
                             // Do something when the dragon object matches the flipped card
                             System.out.println("match");
                             // For example, you can remove the dragon object from the panel

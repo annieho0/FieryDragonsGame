@@ -3,7 +3,8 @@ import javax.imageio.ImageIO;
 
 public class OBJ_Lizard extends DragonCards{
     public OBJ_Lizard(){
-        name = "lizard";
+        this.setName("lizard");
+        this.setImagePath("/objects/lizard.png");
         try{
             image = ImageIO.read(getClass().getResourceAsStream("/objects/lizard.png"));
         } catch (Exception e) {

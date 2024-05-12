@@ -11,9 +11,10 @@ public abstract class DragonCards {
     public int x, y;
     private String imagePath;
 
-    public String setImagePath(String imagePath) {
-        return imagePath;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
+
     public String getImagePath() {
         return imagePath;
     }
