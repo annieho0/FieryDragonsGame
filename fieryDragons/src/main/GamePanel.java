@@ -190,7 +190,17 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         }
 
     }
+    private boolean isMatch(String cardImage) {
+        for (DragonCards dragon : obj) {
+            if (dragon != null && cardImage.equalsIgnoreCase(dragon.getImagePath().trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private int dragonPositionIndex = -1;
+
     @Override
     public void mouseClicked(MouseEvent e) {
         for (Cards card : this.cards) {
@@ -203,32 +213,61 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
                 // Only move the dragon if the card is being flipped to its flipped state
                 if (!isFlipped) {
-                    // Move to the next position clockwise
-                    dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
-                    int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
-
-                    // Set the current position of the pink dragon
-                    pinkDragon.setCurrentPosition(nextPosition[1], nextPosition[0]); // Coordinates are flipped in the list
-
-                    int index = card.getBackImageIndex();
-                    if (index >= 0 && index < obj.length) {
-                        DragonCards dragon = obj[index];
-                        // Check if the dragon object exists and matches the flipped card's image
-                        if (dragon != null && card.getBackImage().equalsIgnoreCase(dragon.getImagePath().trim())) {
-                            // Do something when the dragon object matches the flipped card
-                            System.out.println("match");
-                            // For example, you can remove the dragon object from the panel
-                            obj[index] = null;
+                    // Check if the flipped card's image matches one of the predefined asset names
+                    String[] assetNames = {"spider", "bat", "egg", "lizard"};
+                    boolean contain = false;
+                    for (String name : assetNames) {
+                        if (card.getBackImage().toLowerCase().contains(name)) {
+                            contain = true;
+                            break;
                         }
                     }
 
-                    // Update the panel to reflect changes
-                    repaint();
+                    if (contain) {
+                        // Move to the next position clockwise
+                        dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
+                        int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
+
+                        // Set the current position of the pink dragon
+
+                        // Check if there's a match between the flipped card's image and the DragonCard's image
+                        if (isMatch(card.getBackImage())) {
+                            // Do something when there's a match
+                            System.out.println("match");
+                            // Move the dragon by one instead of incrementing dragonPositionIndex
+                            pinkDragon.setCurrentPosition(nextPosition[1], nextPosition[0]); // Coordinates are flipped in the list
+
+                            // Update the panel to reflect changes
+                            repaint();
+                        } else {
+                            pinkDragon.setCurrentPosition(nextPosition[1], nextPosition[0]); // Coordinates are flipped in the list
+
+                            // Update the panel to reflect changes
+                            repaint();
+                        }
+                        // Prevent further movement by breaking the loop
+                        break;
+                    } else {
+                        // If the flipped card's image is not in assetNames, move the dragon back
+                        // Check if the image name contains "1" or "2" and move accordingly
+                        int movement = 1;
+                        if (card.getBackImage().contains("1")) {
+                            movement = 1;
+                        } else if (card.getBackImage().contains("2")) {
+                            movement = 2;
+                        }
+                        // Move the dragon back by the specified number of tiles
+                        dragonPositionIndex = (dragonPositionIndex - movement + coordinatesWithOne.size()) % coordinatesWithOne.size();
+                        int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
+                        pinkDragon.setCurrentPosition(nextPosition[1], nextPosition[0]); // Coordinates are flipped in the list
+                        // Update the panel to reflect changes
+                        repaint();
+                    }
                 }
             }
         }
-
     }
+
 
     @Override
     public void mousePressed(MouseEvent e) {
