@@ -210,6 +210,18 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                     // Set the current position of the pink dragon
                     pinkDragon.setCurrentPosition(nextPosition[1], nextPosition[0]); // Coordinates are flipped in the list
 
+                    int index = card.getBackImageIndex();
+                    if (index >= 0 && index < obj.length) {
+                        DragonCards dragon = obj[index];
+                        // Check if the dragon object exists and matches the flipped card's image
+                        if (dragon != null && card.getBackImage().equals(dragon.getImagePath())) {
+                            // Do something when the dragon object matches the flipped card
+                            System.out.println("match");
+                            // For example, you can remove the dragon object from the panel
+                            obj[index] = null;
+                        }
+                    }
+
                     // Update the panel to reflect changes
                     repaint();
                 }

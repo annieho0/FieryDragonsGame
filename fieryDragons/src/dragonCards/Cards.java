@@ -52,6 +52,10 @@ public class Cards {
         }
     }
 
+    public int getBackImageIndex() {
+        return backImageIndex;
+    }
+
     public String getBackImage() {
         return backImagePath;
     }
@@ -75,5 +79,6 @@ public class Cards {
             g.drawImage(frontImage, x, y, size, size, null);
         }
     }
+
 }
 
