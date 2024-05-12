@@ -214,7 +214,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                 // Only move the dragon if the card is being flipped to its flipped state
                 if (!isFlipped) {
                     // Check if the flipped card's image matches one of the predefined asset names
-                    String[] assetNames = {"spider", "bat", "egg", "lizard"};
+                    String[] assetNames = {"spider", "spider_2", "spider_3", "bat", "bat_2", "bat_3", "egg", "egg_2", "egg_3", "lizard", "lizard_2", "lizard_3"};
                     boolean contain = false;
                     for (String name : assetNames) {
                         if (card.getBackImage().toLowerCase().contains(name)) {
@@ -233,19 +233,14 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                         // Check if there's a match between the flipped card's image and the DragonCard's image
                         if (isMatch(card.getBackImage())) {
                             // Do something when there's a match
-                            System.out.println("match");
+                            System.out.println("match" + card.getBackImage());
                             // Move the dragon by one instead of incrementing dragonPositionIndex
                             pinkDragon.setCurrentPosition(nextPosition[1], nextPosition[0]); // Coordinates are flipped in the list
 
                             // Update the panel to reflect changes
                             repaint();
-                        } else {
-                            pinkDragon.setCurrentPosition(nextPosition[1], nextPosition[0]); // Coordinates are flipped in the list
-
-                            // Update the panel to reflect changes
-                            repaint();
                         }
-                        // Prevent further movement by breaking the loop
+
                         break;
                     } else {
                         // If the flipped card's image is not in assetNames, move the dragon back
