@@ -247,7 +247,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                                 nextPosition = coordinatesWithOne.get(dragonPositionIndex);
                                 dragonImage = getDragonCardImage(nextPosition);
                                 if (isMatch(cardImage, dragonImage)) {
-                                    moveDragonToPosition(nextPosition);
+                                    moveDragonToPosition(nextPosition,selectedDragon);
                                 } else {
                                     dragonPositionIndex = (dragonPositionIndex - 2) % coordinatesWithOne.size();
                                 }
@@ -260,7 +260,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                                     nextPosition = coordinatesWithOne.get(dragonPositionIndex);
                                     dragonImage = getDragonCardImage(nextPosition);
                                     if (isMatch(cardImage, dragonImage)) {
-                                        moveDragonToPosition(nextPosition);
+                                        moveDragonToPosition(nextPosition, selectedDragon);
                                     } else {
                                         dragonPositionIndex = (dragonPositionIndex - 3) % coordinatesWithOne.size();
                                     }
@@ -270,7 +270,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                             } else {
                                 dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
                                 nextPosition = coordinatesWithOne.get(dragonPositionIndex);
-                                moveDragonToPosition(nextPosition);
+                                moveDragonToPosition(nextPosition, selectedDragon);
                             }
                         }
                         if (dragonOnBoard) {
@@ -295,17 +295,18 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         }
     }
 
+
+
     private int greenDragonSteps = 0;
     private int blueDragonSteps = 0;
     private int pinkDragonSteps = 0;
     private int purpleDragonSteps = 0;
 
-    private void moveDragon(Player dragon) {
-        dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
-        int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
-        // Move the dragon to the new position
-        moveDragonToPosition(nextPosition);
-        // Update step counters
+    private void moveDragonToPosition(int[] position, Player dragon) {
+        selectedDragon.setCurrentPosition(position[1], position[0]); // Flip coordinates
+        dragonOnBoard = true;
+
+        // Increment the appropriate counter based on the dragon
         if (dragon == greenDragon) {
             greenDragonSteps++;
         } else if (dragon == blueDragon) {
@@ -315,19 +316,16 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         } else if (dragon == purpleDragon) {
             purpleDragonSteps++;
         }
+
         // Check if any dragon has completed 24 steps
-        if (greenDragonSteps == 26 || blueDragonSteps == 26 || pinkDragonSteps == 26 || purpleDragonSteps == 26) {
+        if (greenDragonSteps == 25 || blueDragonSteps == 25 || pinkDragonSteps == 25 || purpleDragonSteps == 25) {
             // End the game
             System.exit(0);
         }
-        repaint();
-    }
 
-    private void moveDragonToPosition(int[] position) {
-        selectedDragon.setCurrentPosition(position[1], position[0]); // Flip coordinates
-        dragonOnBoard = true;
         repaint(); // Update panel
     }
+
 
 
 
