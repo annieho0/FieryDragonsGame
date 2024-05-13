@@ -59,8 +59,7 @@ public abstract class Player extends Entity{
         x = positionX * gp.tileSize;
         y = positionY * gp.tileSize;
     }
-    public abstract boolean hasMatches();
-    public abstract String getDragonCardImage();
+
 
 
     public int getX() {

@@ -168,6 +168,28 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         }
         return "";
     }
+    private void moveDragonForward(int steps, String cardImage) {
+        int originalIndex = dragonPositionIndex; // Store the original index
+
+        for (int i = 0; i < steps; i++) {
+            dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
+            int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
+            String dragonImage = getDragonCardImage(nextPosition);
+
+            if (!isMatch(cardImage, dragonImage)) {
+                // If any of the images doesn't match, revert the index and exit
+                dragonPositionIndex = originalIndex;
+                return;
+            }
+        }
+
+        // If all images match, move the dragon to the last position
+        int[] finalPosition = coordinatesWithOne.get(dragonPositionIndex);
+        moveDragonToPosition(finalPosition);
+        tilesMoved += steps;
+    }
+
+
 
     private int dragonPositionIndex = -1;
     boolean dragonOnBoard = false;
@@ -191,48 +213,16 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                         String cardImage = card.getBackImage().trim().toLowerCase();
                         String dragonImage = getDragonCardImage(nextPosition);
                         if (isMatch(cardImage, dragonImage)) {
-                            System.out.println((cardImage + dragonImage));
                             if (cardImage.contains("2")) {
-
-                                dragonPositionIndex = (dragonPositionIndex + 2) % coordinatesWithOne.size();
-                                nextPosition = coordinatesWithOne.get(dragonPositionIndex);
-                                dragonImage = getDragonCardImage(nextPosition);
-                                if (isMatch(cardImage, dragonImage)) {
-                                    moveDragonToPosition(nextPosition);
-                                    tilesMoved += 2;
-                                } else {
-                                    dragonPositionIndex = (dragonPositionIndex - 2) % coordinatesWithOne.size();
-                                }
-
+                                moveDragonForward(2, cardImage);
                             } else if (cardImage.contains("3")) {
-
-                                dragonPositionIndex = (dragonPositionIndex + 2) % coordinatesWithOne.size();
-                                nextPosition = coordinatesWithOne.get(dragonPositionIndex);
-                                dragonImage = getDragonCardImage(nextPosition);
-                                if (isMatch(cardImage, dragonImage)) {
-                                    dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
-                                    nextPosition = coordinatesWithOne.get(dragonPositionIndex);
-                                    dragonImage = getDragonCardImage(nextPosition);
-                                    if (isMatch(cardImage, dragonImage)) {
-                                        moveDragonToPosition(nextPosition);
-                                        tilesMoved += 3;
-                                    } else {
-                                        dragonPositionIndex = (dragonPositionIndex - 3) % coordinatesWithOne.size();
-                                    }
-
-                                } else {
-                                    dragonPositionIndex = (dragonPositionIndex - 2) % coordinatesWithOne.size();
-
-                                }
+                                moveDragonForward(3, cardImage);
 
                             } else {
-                                dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
-                                nextPosition = coordinatesWithOne.get(dragonPositionIndex);
-                                moveDragonToPosition(nextPosition);
-                                tilesMoved++;
+                                moveDragonForward(1, cardImage);
                             }
-
                         }
+
                         if (dragonOnBoard) {
                             // If the flipped card's image is not in assetNames, move the dragon back
                             // Check if the image name contains "1" or "2" and move accordingly
