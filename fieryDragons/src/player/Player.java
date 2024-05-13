@@ -13,7 +13,7 @@ public abstract class Player extends Entity{
     protected BufferedImage dragonImage;
     protected PlayerTurn playerTurn;
 
-    public Player(GamePanel gp, String imagePath, int startX, int startY) {
+    public Player(GamePanel gp, String imagePath, int startX, int startY, PlayerTurn playerTurn) {
         this.gp = gp;
         this.playerTurn = playerTurn;
         setDefaultValues(startX, startY);

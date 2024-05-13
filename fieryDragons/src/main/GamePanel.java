@@ -27,11 +27,11 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     //FPS
     int fps = 60;
-    GreenDragon greenDragon = new GreenDragon(this,12,12);
-    BlueDragon blueDragon = new BlueDragon(this, 12, 2);
-    PinkDragon pinkDragon = new PinkDragon(this, 4, 12);
-    private boolean isFirstClick = true;
-    PurpleDragon purpleDragon = new PurpleDragon(this, 4, 2);
+    GreenDragon greenDragon = new GreenDragon(this,12,12, PlayerTurn.GREEN);
+    BlueDragon blueDragon = new BlueDragon(this, 12, 2, PlayerTurn.BLUE);
+//    BlueDragon blueDragon = new BlueDragon(this, 11, 4, PlayerTurn.BLUE);
+    PinkDragon pinkDragon = new PinkDragon(this, 4, 12, PlayerTurn.PINK);
+    PurpleDragon purpleDragon = new PurpleDragon(this, 4, 2, PlayerTurn.PURPLE);
     TileManager tileManager = new TileManager(this);
     Thread gameThread;
     AssetSetter assetSetter = new AssetSetter(this);
@@ -60,10 +60,42 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
         for (int i = 0; i < coordinatesWithOne.size(); i++) {
             if (coordinatesWithOne.get(i)[0] == 11 && coordinatesWithOne.get(i)[1] == 6) {
-                dragonPositionIndex = i;
-                break;
+                pinkDragonIndex = i;
+                System.out.println(pinkDragonIndex);
+
+            }else if (coordinatesWithOne.get(i)[0] == 5 && coordinatesWithOne.get(i)[1] == 4) {
+                purpleDragonIndex = i;
+                System.out.println(purpleDragonIndex);
+
+            }else if (coordinatesWithOne.get(i)[0] == 3 && coordinatesWithOne.get(i)[1] == 10) {
+                blueDragonIndex = i;
+                System.out.println(blueDragonIndex);
+
+            }else if (coordinatesWithOne.get(i)[0] == 11 && coordinatesWithOne.get(i)[1] == 10) {
+                greenDragonIndex = i;
+                System.out.println(greenDragonIndex);
+
             }
         }
+        for (int i = 0; i < coordinatesWithOne.size(); i++) {
+            int x = coordinatesWithOne.get(i)[0];
+            int y = coordinatesWithOne.get(i)[1];
+            System.out.println("Checking coordinates: [" + x + ", " + y + "]");
+            if (x == 11 && y == 6) {
+                pinkDragonIndex = i;
+                System.out.println("Pink Dragon Index: " + pinkDragonIndex);
+            } else if (x == 5 && y == 4) {
+                purpleDragonIndex = i;
+                System.out.println("Purple Dragon Index: " + purpleDragonIndex);
+            } else if (x == 4 && y == 11) {
+                blueDragonIndex = i;
+                System.out.println("Blue Dragon Index: " + blueDragonIndex);
+            } else if (x == 11 && y == 10) {
+                greenDragonIndex = i;
+                System.out.println("Green Dragon Index: " + greenDragonIndex);
+            }
+        }
+
 
     }
     private void sortCoordinatesClockwise() {
@@ -87,7 +119,20 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         gameThread.start();
     }
     public void update() {
-        greenDragon.update();
+        switch (playerTurn) {
+            case PINK:
+                pinkDragon.update();
+                break;
+            case PURPLE:
+                purpleDragon.update();
+                break;
+            case BLUE:
+                blueDragon.update();
+                break;
+            case GREEN:
+                greenDragon.update();
+                break;
+        }
 
     }
 
@@ -114,8 +159,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         g2.dispose();
 
     }
-
-
 
 
     @Override
@@ -175,10 +218,12 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
             dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
             int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
             String dragonImage = getDragonCardImage(nextPosition);
-
+            System.out.println(Arrays.toString(nextPosition));
             if (!isMatch(cardImage, dragonImage)) {
+                switchPlayerTurn();
                 // If any of the images doesn't match, revert the index and exit
                 dragonPositionIndex = originalIndex;
+
                 return;
             }
         }
@@ -192,6 +237,10 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
 
     private int dragonPositionIndex = -1;
+    private int pinkDragonIndex = -1;
+    private int purpleDragonIndex = -1;
+    private int blueDragonIndex = -1;
+    private int greenDragonIndex = -1;
     boolean dragonOnBoard = false;
     private int tilesMoved = 0;
     @Override
@@ -221,6 +270,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                             } else {
                                 moveDragonForward(1, cardImage);
                             }
+                        }else{
+                            switchPlayerTurn();
                         }
 
                         if (dragonOnBoard) {
@@ -234,7 +285,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                                 // Move the dragon back by the specified number of tiles
                                 dragonPositionIndex = (dragonPositionIndex - movement + coordinatesWithOne.size()) % coordinatesWithOne.size();
                                 nextPosition = coordinatesWithOne.get(dragonPositionIndex);
-                                pinkDragon.setCurrentPosition(nextPosition[1], nextPosition[0]); // Coordinates are flipped in the list
+                                moveDragonToPosition(nextPosition);
+//                                pinkDragon.setCurrentPosition(nextPosition[1], nextPosition[0]); // Coordinates are flipped in the list
                                 tilesMoved -= movement;
                                 // Update the panel to reflect changes
                                 repaint();
@@ -254,11 +306,47 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     }
     private void moveDragonToPosition(int[] position) {
-        pinkDragon.setCurrentPosition(position[1], position[0]); // Flip coordinates
+        switch (playerTurn) {
+            case PINK:
+                pinkDragon.setCurrentPosition(position[1], position[0]);
+                break;
+            case PURPLE:
+                purpleDragon.setCurrentPosition(position[1], position[0]);
+                break;
+            case BLUE:
+                blueDragon.setCurrentPosition(position[1], position[0]);
+                break;
+            case GREEN:
+                greenDragon.setCurrentPosition(position[1], position[0]);
+                break;
+        }
         dragonOnBoard = true;
         repaint(); // Update panel
     }
+    private PlayerTurn playerTurn = PlayerTurn.PINK;
+    private void switchPlayerTurn(){
+        playerTurn = playerTurn.next();
 
+        switch (playerTurn) {
+            case PINK:
+                dragonPositionIndex = pinkDragonIndex;
+                System.out.println("Pink Dragon Index: " + dragonPositionIndex);
+                break;
+            case PURPLE:
+                dragonPositionIndex = purpleDragonIndex;
+                System.out.println("Purple Dragon Index: " + dragonPositionIndex);
+                break;
+            case BLUE:
+                dragonPositionIndex = blueDragonIndex;
+                System.out.println("Blue Dragon Index: " + dragonPositionIndex);
+                break;
+            case GREEN:
+                dragonPositionIndex = greenDragonIndex;
+                System.out.println("Green Dragon Index: " + dragonPositionIndex);
+                break;
+        }
+        System.out.println("Player turn: " + playerTurn);
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {
