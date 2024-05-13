@@ -1,7 +1,9 @@
 package main;
 
 import boardCards.AssetSetter;
+import boardCards.ImageLoader;
 import dragonCards.Cards;
+import dragonCards.CircleManager;
 import player.*;
 import tile.TileManager;
 import tokens.DragonCards;
@@ -37,6 +39,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     public ArrayList<String> availableImages = new ArrayList<>();
     private List<int[]> coordinatesWithOne;
     FindCoordinatesWithValue coordinatesFinder;
+    private CircleManager circleManager;
 
     public GamePanel(){
         int screenWidth = tileSize * maxScreenCol;
@@ -45,26 +48,14 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addMouseListener(this);
-        availableImages.add("/objects/bat.gif");
-        availableImages.add("/objects/bat_2.png");
-        availableImages.add("/objects/bat_3.png");
-        availableImages.add("/objects/spider.png");
-        availableImages.add("/objects/spider_2.png");
-        availableImages.add("/objects/spider_3.png");
-        availableImages.add("/objects/egg.png");
-        availableImages.add("/objects/egg_2.png");
-        availableImages.add("/objects/egg_3.png");
-        availableImages.add("/objects/lizard.png");
-        availableImages.add("/objects/lizard_2.png");
-        availableImages.add("/objects/lizard_3.png");
-        availableImages.add("/objects/skull.png");
-        availableImages.add("/objects/skull_2.png");
-        availableImages.add("/objects/skull.png");
-        availableImages.add("/objects/skull_2.png");
+        availableImages.addAll(ImageLoader.loadImages());
 
         coordinatesFinder = new FindCoordinatesWithValue();
         coordinatesWithOne = coordinatesFinder.getCoordinatesWithOne();
         sortCoordinatesClockwise();
+        circleManager = new CircleManager(availableImages);
+        circleManager.initializeCircles(screenWidth, screenHeight);
+        cards = circleManager.getCards();
 
         for (int i = 0; i < coordinatesWithOne.size(); i++) {
             if (coordinatesWithOne.get(i)[0] == 11 && coordinatesWithOne.get(i)[1] == 6) {
@@ -109,13 +100,10 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                 obj[i].draw(g2, this);
             }
         }
-        if (cards == null) {
-            initializeCircles();
-        }
-
-        // Draw cards
-        for (Cards cards : this.cards) {
-            cards.draw(g2);
+        if (cards != null) {
+            for (Cards card : cards) {
+                card.draw(g2);
+            }
         }
         greenDragon.draw(g2);
         blueDragon.draw(g2);
@@ -127,36 +115,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     }
 
 
-    public void initializeCircles() {
-        int centerX = getWidth() / 2;
-        int centerY = getHeight() / 2;
 
-        // Calculate circle radius
-        int radius = Math.min(getWidth(), getHeight()) / 5;
-
-        // Initialize cards
-        int numCircles = 16;
-        int circleSize = 40;
-        double angleStep = 2 * Math.PI / numCircles;
-        cards = new Cards[numCircles];
-
-        // Shuffle the list of available images
-        Collections.shuffle(availableImages);
-
-        for (int i = 0; i < numCircles; i++) {
-            double angle = angleStep * i;
-            int xOffset = 25;
-            int circleX = (int) (centerX + radius * Math.cos(angle)) - (circleSize / 2) + xOffset;
-            int yOffset = 25;
-            int circleY = (int) (centerY + radius * Math.sin(angle)) - (circleSize / 2) - yOffset;
-            cards[i] = new Cards(circleX, circleY, circleSize);
-            // Set front image for each circle
-            cards[i].setFrontImage("/objects/dragon.png");
-            // Set back image for each circle from shuffled list
-            String backImagePath = availableImages.get(i);
-            cards[i].setBackImage(backImagePath, i);
-        }
-    }
 
     @Override
     public void run() {
