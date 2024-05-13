@@ -8,6 +8,7 @@ import player.*;
 import tile.TileManager;
 import tokens.DragonCards;
 import util.FindCoordinatesWithValue;
+import winning.WinningPage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -258,7 +259,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         if (tilesMoved == 25) {
             // Trigger the win condition
             System.out.println("Congratulations! You have won the game!");
-            // Add any additional actions for winning the game here
+            WinningPage winningPage = new WinningPage();
         }
 
     }
