@@ -30,6 +30,11 @@ public abstract class Player extends Entity{
             e.printStackTrace();
         }
     }
+    public boolean contains(int mouseX, int mouseY) {
+        return mouseX >= x && mouseX <= x + gp.tileSize &&
+                mouseY >= y && mouseY <= y + gp.tileSize;
+    }
+
 
     protected void setDefaultValues(int startX, int startY) {
         x = startX * gp.tileSize;
