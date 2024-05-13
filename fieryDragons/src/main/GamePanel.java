@@ -68,9 +68,15 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
         for (int i = 0; i < coordinatesWithOne.size(); i++) {
             if (coordinatesWithOne.get(i)[0] == 11 && coordinatesWithOne.get(i)[1] == 6) {
-                purpleDragonPositionIndex = i;
                 pinkDragonPositionIndex = i;
+                break;
+            }if (coordinatesWithOne.get(i)[0] == 5 && coordinatesWithOne.get(i)[1] == 6) {
+                purpleDragonPositionIndex = i;
+                break;
+            }if (coordinatesWithOne.get(i)[0] == 5 && coordinatesWithOne.get(i)[1] == 12) {
                 blueDragonPositionIndex = i;
+                break;
+            }if (coordinatesWithOne.get(i)[0] == 11 && coordinatesWithOne.get(i)[1] == 11) {
                 greenDragonPositionIndex = i;
                 break;
             }
@@ -194,7 +200,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     }
     private boolean isMatch(String cardImage, String dragonImage) {
-        System.out.println(getBaseName(cardImage) + getBaseName(dragonImage));
         // Check if the card image matches the dragon card/tile image
         return cardImage.contains(getBaseName(dragonImage));
     }
@@ -241,13 +246,18 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         } else if (purpleDragon.contains(e.getX(), e.getY())) {
             selectedDragon = purpleDragon;
         } else {
+
             // If a card is clicked
             for (Cards card : this.cards) {
+
                 if (card.contains(e.getX(), e.getY())) {
+
                     boolean isFlipped = card.isFlipped();
                     card.flip();
+
                     // Only move the dragon if the card is being flipped to its flipped state and a dragon is selected
                     if (!isFlipped && selectedDragon != null) {
+
                         int dragonPositionIndex = getDragonPositionIndex(selectedDragon);
                         int[] nextPosition = coordinatesWithOne.get((dragonPositionIndex + 1) % coordinatesWithOne.size());
                         String cardImage = card.getBackImage().trim().toLowerCase();
@@ -315,6 +325,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         } else if (dragon == pinkDragon) {
             return pinkDragonPositionIndex;
         } else if (dragon == purpleDragon) {
+            System.out.println();
             return purpleDragonPositionIndex;
         } else {
             return -1; // Invalid dragon
