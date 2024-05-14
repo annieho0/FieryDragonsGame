@@ -3,12 +3,12 @@ package main;
 import javax.swing.*;
 import java.awt.image.BufferStrategy;
 
-public class Window extends JFrame {
+public class GameWindow extends JFrame {
 
     private BufferStrategy bs;
     private GamePanel gamePanel;
 
-    public Window() {
+    public GameWindow() {
         setTitle("Fiery Dragons");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
