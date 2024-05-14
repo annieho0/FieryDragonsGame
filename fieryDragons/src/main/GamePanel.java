@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     int fps = 60;
     GreenDragon greenDragon = new GreenDragon(this,12,12, PlayerTurn.GREEN);
     BlueDragon blueDragon = new BlueDragon(this, 12, 2, PlayerTurn.BLUE);
-//    BlueDragon blueDragon = new BlueDragon(this, 12, 9, PlayerTurn.BLUE);
+//    BlueDragon blueDragon = new BlueDragon(this, 11, 10, PlayerTurn.BLUE);
     PinkDragon pinkDragon = new PinkDragon(this, 4, 12, PlayerTurn.PINK);
     PurpleDragon purpleDragon = new PurpleDragon(this, 4, 2, PlayerTurn.PURPLE);
     TileManager tileManager = new TileManager(this);
@@ -41,6 +41,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     private List<int[]> coordinatesWithOne;
     FindCoordinatesWithValue coordinatesFinder;
     private CircleManager circleManager;
+    private boolean skullCardFlipped = false;
+
 
     public GamePanel(){
         int screenWidth = tileSize * maxScreenCol;
@@ -71,13 +73,20 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                 blueDragonIndex = i;
                 System.out.println(blueDragonIndex);
 
-            }else if (coordinatesWithOne.get(i)[0] == 8 && coordinatesWithOne.get(i)[1] == 13) {
+            }else if (coordinatesWithOne.get(i)[0] == 9 && coordinatesWithOne.get(i)[1] == 12) {
                 greenDragonIndex = i;
                 System.out.println(greenDragonIndex);
 
             }
         }
         switchPlayerTurn();
+        for (int i = 0; i < coordinatesWithOne.size(); i++) {
+            int[] coordinates = coordinatesWithOne.get(i);
+            int xCoordinate = coordinates[0];
+            int yCoordinate = coordinates[1];
+            System.out.println("Index: " + i + ", Coordinates: (" + xCoordinate + ", " + yCoordinate + ")");
+        }
+
 
 
     }
@@ -104,20 +113,28 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     public void update() {
         switch (playerTurn) {
             case PINK:
-                pinkDragon.update();
+                if (!skullCardFlipped) {
+                    pinkDragon.update();
+                }
                 break;
             case PURPLE:
-                purpleDragon.update();
+                if (!skullCardFlipped) {
+                    purpleDragon.update();
+                }
                 break;
             case BLUE:
-                blueDragon.update();
+                if (!skullCardFlipped) {
+                    blueDragon.update();
+                }
                 break;
             case GREEN:
-                greenDragon.update();
+                if (!skullCardFlipped) {
+                    greenDragon.update();
+                }
                 break;
         }
-
     }
+
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -204,21 +221,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                         System.out.println(Arrays.toString(nextPosition));
                         String cardImage = card.getBackImage().trim().toLowerCase();
                         String dragonImage = getDragonCardImage(nextPosition);
-                        if (isMatch(cardImage, dragonImage)) {
-                            if (cardImage.contains("2")) {
-                                moveDragonForward(2, cardImage);
-                            } else if (cardImage.contains("3")) {
-                                moveDragonForward(3, cardImage);
-
-                            } else {
-                                moveDragonForward(1, cardImage);
-                            }
-                        }else{
-                            System.out.println("no match 2");
-                                // If the flipped card's image is not in assetNames, move the dragon back
-                                // Check if the image name contains "1" or "2" and move accordingly
+                        if (dragonOnBoard){
                             if (cardImage.contains("skull")) {
-                                if (dragonOnBoard) {
+                                skullCardFlipped = true;
 
                                 int movement = 1;
                                 if (cardImage.contains("2")) {
@@ -234,12 +239,21 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                                 switchPlayerTurn();
                                 repaint();
                                 break;
-                                }
-                            }switchPlayerTurn();
+                            }else{switchPlayerTurn();}
 
+                        }else if (isMatch(cardImage, dragonImage)) {
+                            if (cardImage.contains("2")) {
+                                moveDragonForward(2, cardImage);
+                            } else if (cardImage.contains("3")) {
+                                moveDragonForward(3, cardImage);
 
-                        }repaint();
-
+                            } else {
+                                moveDragonForward(1, cardImage);
+                            }
+                        }else{
+                            switchPlayerTurn();
+                        }
+                        repaint();
 
                     }
                 }
@@ -274,11 +288,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         return "";
     }
 
-
-
     private void moveDragonForward(int steps, String cardImage) {
         int originalIndex = dragonPositionIndex; // Store the original index
-
+        System.out.println("matching test");
         for (int i = 0; i < steps; i++) {
             dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
             int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
@@ -288,6 +300,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                 // If any of the images doesn't match, revert the index and exit
                 dragonPositionIndex = originalIndex;
                 System.out.println("no match");
+                switchPlayerTurn();
                 return;
             }
         }
