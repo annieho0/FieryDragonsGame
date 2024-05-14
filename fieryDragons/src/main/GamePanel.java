@@ -80,14 +80,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
             }
         }
         switchPlayerTurn();
-        for (int i = 0; i < coordinatesWithOne.size(); i++) {
-            int[] coordinates = coordinatesWithOne.get(i);
-            int xCoordinate = coordinates[0];
-            int yCoordinate = coordinates[1];
-            System.out.println("Index: " + i + ", Coordinates: (" + xCoordinate + ", " + yCoordinate + ")");
-        }
-
-
 
     }
     private void sortCoordinatesClockwise() {
@@ -211,7 +203,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
                     // Flip the card (toggle the flipped state)
                     card.flip();
-                    System.out.println("flip");
 
                     // Only move the dragon if the card is being flipped to its flipped state
                     if (!isFlipped) {
@@ -221,8 +212,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                         System.out.println(Arrays.toString(nextPosition));
                         String cardImage = card.getBackImage().trim().toLowerCase();
                         String dragonImage = getDragonCardImage(nextPosition);
-                        if (dragonOnBoard){
-                            if (cardImage.contains("skull")) {
+                        System.out.println(dragonOnBoard);
+                        if (dragonOnBoard) {
+                            if (cardImage.contains("skull")){
                                 skullCardFlipped = true;
 
                                 int movement = 1;
@@ -239,9 +231,10 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                                 switchPlayerTurn();
                                 repaint();
                                 break;
-                            }else{switchPlayerTurn();}
+                            }skullCardFlipped = false;
 
-                        }else if (isMatch(cardImage, dragonImage)) {
+
+                        }if (isMatch(cardImage, dragonImage)) {
                             if (cardImage.contains("2")) {
                                 moveDragonForward(2, cardImage);
                             } else if (cardImage.contains("3")) {
@@ -252,8 +245,12 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                             }
                         }else{
                             switchPlayerTurn();
+                            // If the dragon isn't on the board yet, check if a non-skull card is flipped
+
                         }
                         repaint();
+
+
 
                     }
                 }
@@ -269,8 +266,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     }
     private boolean isMatch(String cardImage, String dragonImage) {
         // Check if the card image matches the dragon card/tile image
-        System.out.println(cardImage);
-        System.out.println(dragonImage);
         return cardImage.contains(getBaseName(dragonImage));
     }
     private String getBaseName(String imagePath) {
@@ -318,37 +313,41 @@ private void moveDragonToPosition(int[] position) {
         case PINK:
             currentX = pinkDragon.getX();
             currentY = pinkDragon.getY();
+            System.out.println(currentX +","+ currentY);
             if (currentX != position[1] || currentY != position[0]) {
                 dragonOnBoard = true;
                 System.out.println("pink on board");
-            }
+            }else{dragonOnBoard = false;}
             pinkDragon.setCurrentPosition(position[1], position[0]);
             break;
         case PURPLE:
             currentX = purpleDragon.getX();
             currentY = purpleDragon.getY();
+            System.out.println(currentX +","+ currentY);
             if (currentX != position[1] || currentY != position[0]) {
                 dragonOnBoard = true;
                 System.out.println("purple on board");
-            }
+            }else{dragonOnBoard = false;}
             purpleDragon.setCurrentPosition(position[1], position[0]);
             break;
         case BLUE:
             currentX = blueDragon.getX();
             currentY = blueDragon.getY();
+            System.out.println(currentX +","+ currentY);
             if (currentX != position[1] || currentY != position[0]) {
                 dragonOnBoard = true;
                 System.out.println("blue on board");
-            }
+            }else{dragonOnBoard = false;}
             blueDragon.setCurrentPosition(position[1], position[0]);
             break;
         case GREEN:
             currentX = greenDragon.getX();
             currentY = greenDragon.getY();
+            System.out.println(currentX +","+ currentY);
             if (currentX != position[1] || currentY != position[0]) {
                 dragonOnBoard = true;
                 System.out.println("green on board");
-            }
+            }else{dragonOnBoard = false;}
             greenDragon.setCurrentPosition(position[1], position[0]);
             break;
         default:
