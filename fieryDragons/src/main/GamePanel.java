@@ -235,15 +235,16 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                                 repaint();
                                 break;
                                 }
-                            }
+                            }switchPlayerTurn();
 
 
                         }repaint();
 
+
                     }
                 }
 
-            }switchPlayerTurn();
+            }
         }
         if (tilesMoved == 25) {
             // Trigger the win condition
@@ -349,13 +350,7 @@ private void moveDragonToPosition(int[] position) {
 
     private PlayerTurn playerTurn = PlayerTurn.GREEN;
     private void switchPlayerTurn(){
-        for (Cards card : this.cards) {
-                boolean isFlipped = card.isFlipped();
 
-                if (isFlipped){
-                    card.flip();
-                }
-        }
         playerTurn = playerTurn.next();
 
         switch (playerTurn) {
