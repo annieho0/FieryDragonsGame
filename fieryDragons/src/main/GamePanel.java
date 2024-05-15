@@ -338,23 +338,41 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     }
 
-private void moveDragonToPosition(int[] position,int dragonPositionIndex) {
+    // Create a map to store the positions of all dragons
+    private Map<String, int[]> dragonPositions = new HashMap<>();
+
+private void moveDragonToPosition(int[] position, int dragonPositionIndex) {
+    // Check if the position is already occupied
+    if (dragonPositions.containsValue(position)) {
+        System.out.println("Position occupied");
+        switchPlayerTurn();
+        return;
+    }
+
     switch (playerTurn) {
         case PINK:
             pinkDragon.setCurrentPosition(position[1], position[0]);
             pinkDragonIndex = dragonPositionIndex;
+            // Update the position in the map
+            dragonPositions.put("PINK", position);
             break;
         case PURPLE:
             purpleDragon.setCurrentPosition(position[1], position[0]);
             purpleDragonIndex = dragonPositionIndex;
+            // Update the position in the map
+            dragonPositions.put("PURPLE", position);
             break;
         case BLUE:
             blueDragon.setCurrentPosition(position[1], position[0]);
             blueDragonIndex = dragonPositionIndex;
+            // Update the position in the map
+            dragonPositions.put("BLUE", position);
             break;
         case GREEN:
             greenDragon.setCurrentPosition(position[1], position[0]);
             greenDragonIndex = dragonPositionIndex;
+            // Update the position in the map
+            dragonPositions.put("GREEN", position);
             break;
         default:
             return; // Handle the default case
@@ -362,6 +380,7 @@ private void moveDragonToPosition(int[] position,int dragonPositionIndex) {
 
     repaint(); // Update panel
 }
+
 
     private PlayerTurn playerTurn = PlayerTurn.GREEN;
     private void switchPlayerTurn(){
