@@ -9,14 +9,12 @@ import tile.TileManager;
 import tokens.DragonCards;
 import util.FindCoordinatesWithValue;
 import winning.WinningPage;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.*;
 import java.util.List;
-
 
 public class GamePanel extends JPanel implements Runnable, MouseListener {
     final int originalTileSize = 16;
@@ -103,28 +101,28 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         gameThread.start();
     }
     public void update() {
-        switch (playerTurn) {
-            case PINK:
-                if (!skullCardFlipped) {
-                    pinkDragon.update();
-                }
-                break;
-            case PURPLE:
-                if (!skullCardFlipped) {
-                    purpleDragon.update();
-                }
-                break;
-            case BLUE:
-                if (!skullCardFlipped) {
-                    blueDragon.update();
-                }
-                break;
-            case GREEN:
-                if (!skullCardFlipped) {
-                    greenDragon.update();
-                }
-                break;
-        }
+//        switch (playerTurn) {
+//            case PINK:
+//                if (!skullCardFlipped) {
+//                    pinkDragon.update();
+//                }
+//                break;
+//            case PURPLE:
+//                if (!skullCardFlipped) {
+//                    purpleDragon.update();
+//                }
+//                break;
+//            case BLUE:
+//                if (!skullCardFlipped) {
+//                    blueDragon.update();
+//                }
+//                break;
+//            case GREEN:
+//                if (!skullCardFlipped) {
+//                    greenDragon.update();
+//                }
+//                break;
+//        }
     }
 
 
@@ -191,8 +189,11 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     private int blueDragonIndex = -1;
     private int greenDragonIndex = -1;
     private int dragonPositionIndex = -1;
-    boolean dragonOnBoard = false;
     private int tilesMoved = 0;
+    private boolean pinkDragonOnBoard = false;
+    private boolean purpleDragonOnBoard = false;
+    private boolean blueDragonOnBoard = false;
+    private boolean greenDragonOnBoard = false;
     @Override
     public void mouseClicked(MouseEvent e) {
         if(tilesMoved < 25) {
@@ -212,10 +213,23 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                         System.out.println(Arrays.toString(nextPosition));
                         String cardImage = card.getBackImage().trim().toLowerCase();
                         String dragonImage = getDragonCardImage(nextPosition);
-                        System.out.println(dragonOnBoard);
-                        if (dragonOnBoard) {
-                            if (cardImage.contains("skull")){
-                                skullCardFlipped = true;
+                        boolean dragonOnBoard = false;
+                        switch (playerTurn) {
+                            case PINK:
+                                dragonOnBoard = pinkDragonOnBoard;
+                                break;
+                            case PURPLE:
+                                dragonOnBoard = purpleDragonOnBoard;
+                                break;
+                            case BLUE:
+                                dragonOnBoard = blueDragonOnBoard;
+                                break;
+                            case GREEN:
+                                dragonOnBoard = greenDragonOnBoard;
+                                break;
+                        }System.out.println(dragonOnBoard);
+                        if (cardImage.contains("skull")) {
+                            if (dragonOnBoard) {
 
                                 int movement = 1;
                                 if (cardImage.contains("2")) {
@@ -224,17 +238,20 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                                 // Move the dragon back by the specified number of tiles
                                 dragonPositionIndex = (dragonPositionIndex - movement + coordinatesWithOne.size()) % coordinatesWithOne.size();
                                 nextPosition = coordinatesWithOne.get(dragonPositionIndex);
-                                moveDragonToPosition(nextPosition);
+                                moveDragonToPosition(nextPosition, dragonPositionIndex);
 //                                pinkDragon.setCurrentPosition(nextPosition[1], nextPosition[0]); // Coordinates are flipped in the list
                                 tilesMoved -= movement;
                                 // Update the panel to reflect changes
                                 switchPlayerTurn();
                                 repaint();
                                 break;
-                            }skullCardFlipped = false;
-
-
-                        }if (isMatch(cardImage, dragonImage)) {
+                            }else{
+                            switchPlayerTurn();
+                            return;
+                        }
+                        }
+//
+                        if (isMatch(cardImage, dragonImage)) {
                             if (cardImage.contains("2")) {
                                 moveDragonForward(2, cardImage);
                             } else if (cardImage.contains("3")) {
@@ -243,14 +260,10 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                             } else {
                                 moveDragonForward(1, cardImage);
                             }
-                        }else{
+                        } else{
                             switchPlayerTurn();
-                            // If the dragon isn't on the board yet, check if a non-skull card is flipped
-
+                            repaint();
                         }
-                        repaint();
-
-
 
                     }
                 }
@@ -285,77 +298,67 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     private void moveDragonForward(int steps, String cardImage) {
         int originalIndex = dragonPositionIndex; // Store the original index
-        System.out.println("matching test");
         for (int i = 0; i < steps; i++) {
             dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
             int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
             String dragonImage = getDragonCardImage(nextPosition);
             System.out.println(Arrays.toString(nextPosition));
+            System.out.println(cardImage + dragonImage);
             if (!isMatch(cardImage, dragonImage)) {
                 // If any of the images doesn't match, revert the index and exit
                 dragonPositionIndex = originalIndex;
-                System.out.println("no match");
                 switchPlayerTurn();
                 return;
             }
         }
 
-        // If all images match, move the dragon to the last position
         int[] finalPosition = coordinatesWithOne.get(dragonPositionIndex);
-        moveDragonToPosition(finalPosition);
+        moveDragonToPosition(finalPosition, dragonPositionIndex);
+
+// Update the corresponding dragonOnBoard flag
+        switch (playerTurn) {
+            case PINK:
+                pinkDragonOnBoard = true;
+                break;
+            case PURPLE:
+                purpleDragonOnBoard = true;
+                break;
+            case BLUE:
+                blueDragonOnBoard = true;
+                break;
+            case GREEN:
+                greenDragonOnBoard = true;
+                break;
+            default:
+                // Handle the default case
+        }
+
         tilesMoved += steps;
         repaint();
+
     }
 
-private void moveDragonToPosition(int[] position) {
-    int currentX, currentY;
+private void moveDragonToPosition(int[] position,int dragonPositionIndex) {
     switch (playerTurn) {
         case PINK:
-            currentX = pinkDragon.getX();
-            currentY = pinkDragon.getY();
-            System.out.println(currentX +","+ currentY);
-            if (currentX != position[1] || currentY != position[0]) {
-                dragonOnBoard = true;
-                System.out.println("pink on board");
-            }else{dragonOnBoard = false;}
             pinkDragon.setCurrentPosition(position[1], position[0]);
+            pinkDragonIndex = dragonPositionIndex;
             break;
         case PURPLE:
-            currentX = purpleDragon.getX();
-            currentY = purpleDragon.getY();
-            System.out.println(currentX +","+ currentY);
-            if (currentX != position[1] || currentY != position[0]) {
-                dragonOnBoard = true;
-                System.out.println("purple on board");
-            }else{dragonOnBoard = false;}
             purpleDragon.setCurrentPosition(position[1], position[0]);
+            purpleDragonIndex = dragonPositionIndex;
             break;
         case BLUE:
-            currentX = blueDragon.getX();
-            currentY = blueDragon.getY();
-            System.out.println(currentX +","+ currentY);
-            if (currentX != position[1] || currentY != position[0]) {
-                dragonOnBoard = true;
-                System.out.println("blue on board");
-            }else{dragonOnBoard = false;}
             blueDragon.setCurrentPosition(position[1], position[0]);
+            blueDragonIndex = dragonPositionIndex;
             break;
         case GREEN:
-            currentX = greenDragon.getX();
-            currentY = greenDragon.getY();
-            System.out.println(currentX +","+ currentY);
-            if (currentX != position[1] || currentY != position[0]) {
-                dragonOnBoard = true;
-                System.out.println("green on board");
-            }else{dragonOnBoard = false;}
             greenDragon.setCurrentPosition(position[1], position[0]);
+            greenDragonIndex = dragonPositionIndex;
             break;
         default:
             return; // Handle the default case
     }
-
-    // Check if the dragon has moved to a new position
-
 
     repaint(); // Update panel
 }
