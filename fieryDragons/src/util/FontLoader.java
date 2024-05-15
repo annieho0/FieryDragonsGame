@@ -15,6 +15,7 @@ public class FontLoader {
             ge.registerFont(pixelFont);
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
+            // Handle font loading errors here...
         }
     }
 

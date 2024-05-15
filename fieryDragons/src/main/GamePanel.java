@@ -8,6 +8,7 @@ import player.*;
 import tile.TileManager;
 import tokens.DragonCards;
 import util.FindCoordinatesWithValue;
+import util.FontLoader;
 import winning.WinningPage;
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +35,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     AssetSetter assetSetter = new AssetSetter(this);
     public DragonCards[] obj = new DragonCards[24];
     public Cards[] cards;
-    private Font font;
+    private Font pixelFont;
     public ArrayList<String> availableImages = new ArrayList<>();
     private List<int[]> coordinatesWithOne;
     FindCoordinatesWithValue coordinatesFinder;
@@ -95,7 +96,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
             }
         }
         switchPlayerTurn();
-        this.font = font;
+        FontLoader fontLoader = new FontLoader();
+        pixelFont = fontLoader.getPixelFont();
 
     }
     private void sortCoordinatesClockwise() {
@@ -365,6 +367,20 @@ private void moveDragonToPosition(int[] position, int dragonPositionIndex) {
     if (dragonPositions.containsValue(position)) {
         setMessage("Position occupied");
         switchPlayerTurn();
+        switch (playerTurn) {
+            case PINK:
+                pinkTilesMoved --;
+                break;
+            case PURPLE:
+                purpleTilesMoved --;
+                break;
+            case BLUE:
+                blueTilesMoved --;
+                break;
+            case GREEN:
+                greenTilesMoved --;
+                break;
+        }
         return;
     }
 
@@ -432,25 +448,14 @@ private void moveDragonToPosition(int[] position, int dragonPositionIndex) {
     }
     private void drawMessage(Graphics2D g2, String message) {
         // Set up font and color for the message
-        if (font != null) {
-            g2.setFont(font);
-        } else {
-            g2.setFont(new Font("Arial", Font.BOLD, 20));
-        }
         g2.setColor(Color.WHITE);
+        g2.setFont(pixelFont); // Use the loaded font
 
-        // Get the dimensions of the component from the graphics context
-        int componentWidth = g2.getClipBounds().width;
-        int componentHeight = g2.getClipBounds().height;
-
-        // Calculate position to center the message on the component
+        // Draw the message (centered)
         FontMetrics fm = g2.getFontMetrics();
         int messageWidth = fm.stringWidth(message);
-        int messageHeight = fm.getHeight();
-        int x = (componentWidth - messageWidth) / 2;
-        int y = (componentHeight - messageHeight) / 2;
-
-        // Draw the message
+        int x = (getWidth() - messageWidth) / 2;
+        int y = getHeight() / 2;
         g2.drawString(message, x, y);
     }
 
