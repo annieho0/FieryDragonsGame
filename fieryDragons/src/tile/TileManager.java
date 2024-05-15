@@ -9,10 +9,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+/**
+ * The TileManager class manages the tiles used in the game.
+ */
 public class TileManager {
     GamePanel gp;
     Tile[] tile;
     int mapTileNum[][];
+
+    /**
+     * Constructs a TileManager object.
+     *
+     * @param gp The GamePanel object associated with this TileManager.
+     */
     public TileManager(GamePanel gp){
         this.gp = gp;
         tile = new Tile[50];
@@ -20,6 +29,10 @@ public class TileManager {
         getTileImage();
         loadMap("/maps/map.txt");
     }
+
+    /**
+     * Loads tile images from resources.
+     */
     public void getTileImage(){
         try{
             tile[1] = new Tile();
@@ -119,6 +132,11 @@ public class TileManager {
         }
     }
 
+    /**
+     * Loads a map from a file.
+     *
+     * @param file The path to the map file.
+     */
     public void loadMap(String file){
         try{
             InputStream is = getClass().getResourceAsStream(file);
@@ -148,6 +166,11 @@ public class TileManager {
         } catch (Exception e) {
         }
     }
+    /**
+     * Draws the tiles on the screen.
+     *
+     * @param g2 The Graphics2D object used for drawing.
+     */
     public void draw(Graphics2D g2){
         int col =0;
         int row = 0;

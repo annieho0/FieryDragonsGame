@@ -17,11 +17,36 @@ import java.awt.event.MouseListener;
 import java.util.*;
 import java.util.List;
 
+/**
+ * Represents the panel where the game is displayed.
+ */
 public class GamePanel extends JPanel implements Runnable, MouseListener {
+
+    // Constants for tile size and other properties
+
+    /**
+     * The original size of a tile before scaling.
+     */
     final int originalTileSize = 16;
+
+    /**
+     * The scale factor for resizing tiles.
+     */
     final int scale = 3;
+
+    /**
+     * The size of a tile after scaling.
+     */
     public final int tileSize = originalTileSize * scale;
+
+    /**
+     * The maximum number of columns to be displayed on the screen.
+     */
     public final int maxScreenCol = 16;
+
+    /**
+     * The maximum number of rows to be displayed on the screen.
+     */
     public final int maxScreenRow = 16;
 
     //FPS
@@ -59,7 +84,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     private long messageDisplayStartTime = 0;
 
 
-
+    /**
+     * Constructs a new GamePanel object.
+     */
     public GamePanel(){
         int screenWidth = tileSize * maxScreenCol;
         int screenHeight = tileSize * maxScreenRow;
@@ -113,24 +140,45 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
             return Double.compare(angleB, angleA);
         });
     }
+
+    /**
+     * Sets up the game assets.
+     */
     public void setupGame(){
         assetSetter.setObject();
     }
+
+    /**
+     * Starts the game thread.
+     */
     public void startGameThread(){
         gameThread = new Thread(this);
         gameThread.start();
     }
 
+    /**
+     * Sets a message to be displayed on the game panel.
+     *
+     * @param message The message to be displayed.
+     */
     public void setMessage(String message) {
         this.message = message;
         this.messageDisplayStartTime = System.currentTimeMillis();
         repaint(); // Trigger repaint to display the message
     }
+
+    /**
+     * Updates the game state.
+     */
     public void update() {
 
     }
 
-
+    /**
+     * Paints the game components on the panel.
+     *
+     * @param g The Graphics object to paint on.
+     */
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
@@ -446,6 +494,13 @@ private void moveDragonToPosition(int[] position, int dragonPositionIndex) {
         }
         setMessage("Player turn: " + playerTurn);
     }
+
+    /**
+     * Draws a message on the game panel.
+     *
+     * @param g2 The Graphics2D object to draw with.
+     * @param message The message to be drawn.
+     */
     private void drawMessage(Graphics2D g2, String message) {
         // Set up font and color for the message
         g2.setColor(Color.WHITE);

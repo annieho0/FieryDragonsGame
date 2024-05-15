@@ -3,14 +3,28 @@ package dragonCards;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * The CircleManager class manages the creation and initialization of circular cards on the screen.
+ */
 public class CircleManager {
     private ArrayList<String> availableImages;
     private Cards[] cards;
 
+    /**
+     * Constructs a CircleManager with the specified list of available images.
+     *
+     * @param availableImages The list of available images to be used for the back of the circular cards.
+     */
     public CircleManager(ArrayList<String> availableImages) {
         this.availableImages = availableImages;
     }
 
+    /**
+     * Initializes circular cards on the screen.
+     *
+     * @param screenWidth  The width of the screen.
+     * @param screenHeight The height of the screen.
+     */
     public void initializeCircles(int screenWidth, int screenHeight) {
         int centerX = screenWidth / 2;
         int centerY = screenHeight / 2;
@@ -42,8 +56,12 @@ public class CircleManager {
         }
     }
 
+    /**
+     * Gets the array of circular cards.
+     *
+     * @return The array of circular cards.
+     */
     public Cards[] getCards() {
         return cards;
     }
 }
-

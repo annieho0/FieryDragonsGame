@@ -7,7 +7,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * The WinningPage class represents a window displayed when a dragon wins the game.
+ */
 public class WinningPage extends JFrame {
+
+    /**
+     * Constructs a WinningPage object.
+     *
+     * @param winningDragonColor The color of the winning dragon.
+     */
     public WinningPage(String winningDragonColor) {
         super("Congratulations!");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
