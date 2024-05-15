@@ -3,22 +3,32 @@ package boardCards;
 import main.GamePanel;
 import tokens.*;
 import util.FindCoordinatesWithValue;
+import java.util.*;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
+/**
+ * The AssetSetter class is responsible for setting objects (DragonCards) on the game board.
+ */
 public class AssetSetter {
     private static GamePanel gp;
     private static FindCoordinatesWithValue findcoor;
+    private static Map<String, DragonCards> coordinateObjectMap;
 
+    /**
+     * Constructs an AssetSetter object.
+     *
+     * @param gp The GamePanel object associated with the game.
+     */
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
         findcoor = new FindCoordinatesWithValue();
-
+        coordinateObjectMap = new HashMap<String, DragonCards>();
     }
 
+    /**
+     * Sets objects (DragonCards) on the game board based on specified coordinates.
+     */
     public static void setObject() {
+        // Get coordinates with value 1
         List<int[]> coordinatesWithOne = findcoor.getCoordinatesWithOne();
         Collections.shuffle(coordinatesWithOne);
 
@@ -33,23 +43,39 @@ public class AssetSetter {
             int row = coordinate[0];
             int col = coordinate[1];
 
+            DragonCards object = null;
             // Choose the object type to place based on the count of each object
             if (spiderCount < 6) {
+                object = new OBJ_Spider();
                 placeObject(new OBJ_Spider(), row, col);
                 spiderCount++;
             } else if (batCount < 6) {
+                object = new OBJ_Bat();
                 placeObject(new OBJ_Bat(), row, col);
                 batCount++;
             } else if (eggCount < 6) {
+                object = new OBJ_Egg();
                 placeObject(new OBJ_Egg(), row, col);
                 eggCount++;
             } else if (lizardCount < 6) {
+                object = new OBJ_Lizard();
                 placeObject(new OBJ_Lizard(), row, col);
                 lizardCount++;
+            }
+            if (object != null) {
+                // Store the object at its corresponding coordinates
+                coordinateObjectMap.put(Arrays.toString(coordinate), object);
             }
         }
     }
 
+    /**
+     * Places a DragonCards object on the game board at specified row and column.
+     *
+     * @param object The DragonCards object to be placed.
+     * @param row    The row index where the object will be placed.
+     * @param col    The column index where the object will be placed.
+     */
     private static void placeObject(DragonCards object, int row, int col) {
         int index = 0;
         while (gp.obj[index] != null && index < gp.obj.length) {
@@ -66,5 +92,14 @@ public class AssetSetter {
             System.out.println("No space available in gp.obj array to place object.");
         }
     }
-}
 
+    /**
+     * Retrieves the DragonCards object at the specified coordinate.
+     *
+     * @param coordinate The coordinate of the object to retrieve.
+     * @return The DragonCards object at the specified coordinate, or null if not found.
+     */
+    public static DragonCards getObjectAtCoordinate(String coordinate) {
+        return coordinateObjectMap.get(coordinate);
+    }
+}

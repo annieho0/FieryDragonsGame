@@ -6,9 +6,17 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The FindCoordinatesWithValue class finds coordinates in a map where a specific value is present.
+ */
 public class FindCoordinatesWithValue {
+
+    /** The list to store coordinates where the specified value is present. */
     private List<int[]> coordinatesWithOne;
 
+    /**
+     * Constructs a FindCoordinatesWithValue object and finds coordinates where the specified value is present.
+     */
     public FindCoordinatesWithValue() {
         String mapPath = "/maps/map.txt";
 
@@ -42,11 +50,12 @@ public class FindCoordinatesWithValue {
         }
     }
 
+    /**
+     * Gets the list of coordinates where the specified value is present.
+     *
+     * @return The list of coordinates.
+     */
     public List<int[]> getCoordinatesWithOne() {
         return coordinatesWithOne;
     }
-
-
 }
-
-
