@@ -15,6 +15,8 @@ public abstract class Player extends Entity {
     protected GamePanel gp;
     protected BufferedImage dragonImage;
     protected PlayerTurn playerTurn;
+    private int startX;
+    private int startY;
 
     /**
      * Constructs a Player object.
@@ -28,6 +30,8 @@ public abstract class Player extends Entity {
     public Player(GamePanel gp, String imagePath, int startX, int startY, PlayerTurn playerTurn) {
         this.gp = gp;
         this.playerTurn = playerTurn;
+        this.startX = startX;
+        this.startY = startY;
         setDefaultValues(startX, startY);
         getDragonImage(imagePath);
     }
@@ -113,7 +117,7 @@ public abstract class Player extends Entity {
      * @return The x-coordinate of the player.
      */
     public int getX() {
-        return x;
+        return startX;
     }
 
     /**
@@ -122,7 +126,7 @@ public abstract class Player extends Entity {
      * @return The y-coordinate of the player.
      */
     public int getY() {
-        return y;
+        return startY;
     }
 
     /**

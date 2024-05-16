@@ -58,7 +58,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     TileManager tileManager = new TileManager(this);
     Thread gameThread;
     AssetSetter assetSetter = new AssetSetter(this);
-    public DragonCards[] obj = new DragonCards[24];
+    public DragonCards[] obj = new DragonCards[28];
     public Cards[] cards;
     private Font pixelFont;
     public ArrayList<String> availableImages = new ArrayList<>();
@@ -258,7 +258,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
                         int[] nextPosition = coordinatesWithOne.get((dragonPositionIndex + 1) % coordinatesWithOne.size());
                         //                        int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
-
+                        System.out.println(pinkDragon.getX());
                         String cardImage = card.getBackImage().trim().toLowerCase();
                         String dragonImage = getDragonCardImage(nextPosition);
                         boolean dragonOnBoard = false;
@@ -364,18 +364,18 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     }
 
     private void moveDragonForward(int steps, String cardImage) {
-        int originalIndex = dragonPositionIndex; // Store the original index
+//        int originalIndex = dragonPositionIndex; // Store the original index
         for (int i = 0; i < steps; i++) {
             dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
             int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
             String dragonImage = getDragonCardImage(nextPosition);
 
-            if (!isMatch(cardImage, dragonImage)) {
-                // If any of the images doesn't match, revert the index and exit
-                dragonPositionIndex = originalIndex;
-                switchPlayerTurn();
-                return;
-            }
+//            if (!isMatch(cardImage, dragonImage)) {
+//                // If any of the images doesn't match, revert the index and exit
+//                dragonPositionIndex = originalIndex;
+//                switchPlayerTurn();
+//                return;
+//            }
         }
 
         int[] finalPosition = coordinatesWithOne.get(dragonPositionIndex);
