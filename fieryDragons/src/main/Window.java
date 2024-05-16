@@ -72,11 +72,10 @@ public class Window extends JFrame {
         for (int i = 0; i < 3; i++){
             int finalI = i+2;
             JButton button = new JButton(finalI + " Players");
-            int finalI1 = i;
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    noOfPlayers = finalI1;
+                    noOfPlayers = finalI;
                     gameBoardWindow(noOfPlayers);
 //                    JFrame newFrame = new JFrame("Game Board");
 //                    newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

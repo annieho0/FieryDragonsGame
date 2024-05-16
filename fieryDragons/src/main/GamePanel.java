@@ -208,7 +208,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         if (noOfPlayers >= 3) {
             dragons.add(pinkDragon);
         }
-        if (noOfPlayers >= 4) {
+        if (noOfPlayers == 4) {
             dragons.add(purpleDragon);
         }
 //        greenDragon.draw(g2);
@@ -219,8 +219,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         for (int i = 0; i < dragons.size(); i++){
             dragons.get(i).draw(g2);
         }
-
-
 
         if (!message.isEmpty() && (System.currentTimeMillis() - messageDisplayStartTime) < MESSAGE_DISPLAY_TIME) {
             drawMessage(g2, message);
