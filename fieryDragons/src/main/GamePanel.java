@@ -21,6 +21,7 @@ import java.util.List;
  * Represents the panel where the game is displayed.
  */
 public class GamePanel extends JPanel implements Runnable, MouseListener {
+    private int noOfPlayers;
 
     // Constants for tile size and other properties
 
@@ -55,6 +56,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     BlueDragon blueDragon = new BlueDragon(this, 12, 2, PlayerTurn.BLUE);
     PinkDragon pinkDragon = new PinkDragon(this, 4, 12, PlayerTurn.PINK);
     PurpleDragon purpleDragon = new PurpleDragon(this, 4, 2, PlayerTurn.PURPLE);
+
+    public ArrayList<Player> dragons = new ArrayList<>();
     TileManager tileManager = new TileManager(this);
     Thread gameThread;
     AssetSetter assetSetter = new AssetSetter(this);
@@ -87,7 +90,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     /**
      * Constructs a new GamePanel object.
      */
-    public GamePanel(){
+    public GamePanel(int noOfPlayers){
+        this.noOfPlayers = noOfPlayers;
         int screenWidth = tileSize * maxScreenCol;
         int screenHeight = tileSize * maxScreenRow;
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -194,10 +198,29 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                 card.draw(g2);
             }
         }
-        greenDragon.draw(g2);
-        blueDragon.draw(g2);
-        pinkDragon.draw(g2);
-        purpleDragon.draw(g2);
+
+
+
+        dragons.add(greenDragon);
+        if (noOfPlayers >= 2){
+            dragons.add(blueDragon);
+        }
+        if (noOfPlayers >= 3) {
+            dragons.add(pinkDragon);
+        }
+        if (noOfPlayers >= 4) {
+            dragons.add(purpleDragon);
+        }
+//        greenDragon.draw(g2);
+//        blueDragon.draw(g2);
+//        pinkDragon.draw(g2);
+//        purpleDragon.draw(g2);
+
+        for (int i = 0; i < dragons.size(); i++){
+            dragons.get(i).draw(g2);
+        }
+
+
 
         if (!message.isEmpty() && (System.currentTimeMillis() - messageDisplayStartTime) < MESSAGE_DISPLAY_TIME) {
             drawMessage(g2, message);
