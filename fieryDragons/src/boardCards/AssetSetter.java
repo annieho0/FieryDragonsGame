@@ -98,9 +98,6 @@ public class AssetSetter {
                 coordinateObjectMap.put(Arrays.toString(coordinate), object);
             }
         }
-        System.out.println(getObjectAtCoordinate(new int[]{2, 4}));
-
-        System.out.println(coordinateObjectMap);
     }
 
     /**
@@ -134,6 +131,14 @@ public class AssetSetter {
      * @return The DragonCards object at the specified coordinate, or null if not found.
      */
     public static DragonCards getObjectAtCoordinate(int[] coordinate) {
-        return coordinateObjectMap.get(Arrays.toString(coordinate));
+        String coordinateKey = Arrays.toString(coordinate);
+
+        // Check if the coordinate exists in the map
+        if (coordinateObjectMap.containsKey(coordinateKey)) {
+            return coordinateObjectMap.get(coordinateKey);
+        } else {
+            System.out.println("Object not found at coordinate: " + coordinateKey);
+            return null;
+        }
     }
 }

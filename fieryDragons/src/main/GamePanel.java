@@ -259,8 +259,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 //                        int[] nextPosition = coordinatesWithOne.get((dragonPositionIndex + 1) % coordinatesWithOne.size());
                         int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
 
-
-                        System.out.println(playerTurn);
                         boolean dragonOnBoard = false;
                         switch (playerTurn) {
                             case PINK:
@@ -269,7 +267,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                                 if (dragonOnBoard){
                                     nextPosition = coordinatesWithOne.get(dragonPositionIndex);
                                 }else{
-                                nextPosition = new int[]{pinkDragon.getX(), pinkDragon.getY()};
+                                nextPosition = new int[]{pinkDragon.getY(), pinkDragon.getX()};
                                 }
 
 
@@ -280,7 +278,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                                 if (dragonOnBoard){
                                     nextPosition = coordinatesWithOne.get(dragonPositionIndex);
                                 }else{
-                                nextPosition = new int[]{purpleDragon.getX(), purpleDragon.getY()};}
+                                nextPosition = new int[]{purpleDragon.getY(), purpleDragon.getX()};}
                                 break;
                             case BLUE:
                                 dragonOnBoard = blueDragonOnBoard;
@@ -288,7 +286,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                                 if (dragonOnBoard){
                                     nextPosition = coordinatesWithOne.get(dragonPositionIndex);
                                 }else{
-                                nextPosition = new int[]{blueDragon.getX(), blueDragon.getY()};}
+                                nextPosition = new int[]{blueDragon.getY(), blueDragon.getX()};}
                                 break;
                             case GREEN:
                                 dragonOnBoard = greenDragonOnBoard;
@@ -296,7 +294,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                                 if (dragonOnBoard){
                                     nextPosition = coordinatesWithOne.get(dragonPositionIndex);
                                 }else{
-                                nextPosition = new int[]{greenDragon.getX(), greenDragon.getY()};}
+                                nextPosition = new int[]{greenDragon.getY(), greenDragon.getX()};}
                                 break;
                         }
                         String cardImage = card.getBackImage().trim().toLowerCase();
@@ -337,8 +335,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                             return;
                         }
                         }
-
-                        System.out.println(cardImage +" "+ dragonImage);
                         if (isMatch(cardImage, dragonImage)) {
                             if (cardImage.contains("2")) {
                                 moveDragonForward(2, cardImage);
@@ -366,17 +362,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         }
 
     }
-//    private boolean isMatch(String cardImage, String dragonImage) {
-//        System.out.println(cardImage);
-//        System.out.println(dragonImage);
-//        // Check if the card image matches the dragon card/tile image
-//
-//        return cardImage.contains(getBaseName(dragonImage));
-//    }
+
     private boolean isMatch(String cardImage, String dragonImage) {
         if (cardImage != null && dragonImage != null) {
-            System.out.println(cardImage);
-            System.out.println(dragonImage);
             // Check if the card image contains the base name of the dragon image
             return cardImage.contains(getBaseName(dragonImage));
         }
@@ -384,10 +372,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     }
 
     private String getBaseName(String imagePath) {
-//        // Extract the base name from the image path
-//        String[] parts = imagePath.split("/");
-//        return parts[parts.length - 1].split("\\.")[0];
-
         if (imagePath != null) {
             // Extract the base name from the image path
             String[] parts = imagePath.split("/");
@@ -399,10 +383,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     }
 
     private String getDragonCardImage(int[] nextPosition) {
-        System.out.println("dragoncardcheck"+Arrays.toString(nextPosition));
         DragonCards dragon = assetSetter.getObjectAtCoordinate(nextPosition);
-        System.out.println("dragonimage" + dragon);
-
         if (dragon != null) {
             // Get the dragon card/tile image
             return dragon.getImagePath().trim().toLowerCase();
@@ -411,20 +392,12 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     }
 
     private void moveDragonForward(int steps, String cardImage) {
-//        int originalIndex = dragonPositionIndex; // Store the original index
         for (int i = 0; i < steps; i++) {
             dragonPositionIndex = (dragonPositionIndex + 1) % coordinatesWithOne.size();
             int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
             String dragonImage = getDragonCardImage(nextPosition);
 
-//            if (!isMatch(cardImage, dragonImage)) {
-//                // If any of the images doesn't match, revert the index and exit
-//                dragonPositionIndex = originalIndex;
-//                switchPlayerTurn();
-//                return;
-//            }
         }
-        System.out.println("move dragon");
         int[] finalPosition = coordinatesWithOne.get(dragonPositionIndex);
         moveDragonToPosition(finalPosition, dragonPositionIndex);
 
