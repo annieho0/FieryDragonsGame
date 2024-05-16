@@ -32,6 +32,37 @@ public class AssetSetter {
         List<int[]> coordinatesWithOne = findcoor.getCoordinatesWithOne();
         Collections.shuffle(coordinatesWithOne);
 
+        // Specific coordinates
+        List<int[]> specificCoordinates = Arrays.asList(
+                new int[]{2, 12},
+                new int[]{2, 4},
+                new int[]{12, 4},
+                new int[]{12, 12}
+        );
+
+        // Object types
+        List<DragonCards> objects = Arrays.asList(
+                new OBJ_Spider(),
+                new OBJ_Bat(),
+                new OBJ_Egg(),
+                new OBJ_Lizard()
+        );
+
+        // Shuffle specific coordinates and objects
+        Collections.shuffle(specificCoordinates);
+        Collections.shuffle(objects);
+
+        // Place the objects at specific coordinates
+        for (int i = 0; i < specificCoordinates.size(); i++) {
+            int[] coordinate = specificCoordinates.get(i);
+            int row = coordinate[0];
+            int col = coordinate[1];
+            DragonCards object = objects.get(i);
+
+            placeObject(object, row, col);
+            coordinateObjectMap.put(Arrays.toString(coordinate), object);
+        }
+
         // Track the count of placed objects
         int spiderCount = 0;
         int batCount = 0;
