@@ -98,6 +98,9 @@ public class AssetSetter {
                 coordinateObjectMap.put(Arrays.toString(coordinate), object);
             }
         }
+        System.out.println(getObjectAtCoordinate(new int[]{2, 4}));
+
+        System.out.println(coordinateObjectMap);
     }
 
     /**
@@ -130,7 +133,7 @@ public class AssetSetter {
      * @param coordinate The coordinate of the object to retrieve.
      * @return The DragonCards object at the specified coordinate, or null if not found.
      */
-    public static DragonCards getObjectAtCoordinate(String coordinate) {
-        return coordinateObjectMap.get(coordinate);
+    public static DragonCards getObjectAtCoordinate(int[] coordinate) {
+        return coordinateObjectMap.get(Arrays.toString(coordinate));
     }
 }

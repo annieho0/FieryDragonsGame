@@ -58,7 +58,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     TileManager tileManager = new TileManager(this);
     Thread gameThread;
     AssetSetter assetSetter = new AssetSetter(this);
-    public DragonCards[] obj = new DragonCards[28];
+    public DragonCards[] obj = new DragonCards[30];
     public Cards[] cards;
     private Font pixelFont;
     public ArrayList<String> availableImages = new ArrayList<>();
@@ -256,31 +256,52 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                     // Only move the dragon if the card is being flipped to its flipped state
                     if (!isFlipped) {
 
-                        int[] nextPosition = coordinatesWithOne.get((dragonPositionIndex + 1) % coordinatesWithOne.size());
-                        //                        int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
-                        System.out.println(pinkDragon.getX());
-                        String cardImage = card.getBackImage().trim().toLowerCase();
-                        String dragonImage = getDragonCardImage(nextPosition);
+//                        int[] nextPosition = coordinatesWithOne.get((dragonPositionIndex + 1) % coordinatesWithOne.size());
+                        int[] nextPosition = coordinatesWithOne.get(dragonPositionIndex);
+
+
+                        System.out.println(playerTurn);
                         boolean dragonOnBoard = false;
                         switch (playerTurn) {
                             case PINK:
                                 dragonOnBoard = pinkDragonOnBoard;
 //                                tilesMoved = pinkTilesMoved;
+                                if (dragonOnBoard){
+                                    nextPosition = coordinatesWithOne.get(dragonPositionIndex);
+                                }else{
+                                nextPosition = new int[]{pinkDragon.getX(), pinkDragon.getY()};
+                                }
+
 
                                 break;
                             case PURPLE:
                                 dragonOnBoard = purpleDragonOnBoard;
 //                                tilesMoved = purpleTilesMoved;
+                                if (dragonOnBoard){
+                                    nextPosition = coordinatesWithOne.get(dragonPositionIndex);
+                                }else{
+                                nextPosition = new int[]{purpleDragon.getX(), purpleDragon.getY()};}
                                 break;
                             case BLUE:
                                 dragonOnBoard = blueDragonOnBoard;
 //                                tilesMoved = blueTilesMoved;
+                                if (dragonOnBoard){
+                                    nextPosition = coordinatesWithOne.get(dragonPositionIndex);
+                                }else{
+                                nextPosition = new int[]{blueDragon.getX(), blueDragon.getY()};}
                                 break;
                             case GREEN:
                                 dragonOnBoard = greenDragonOnBoard;
 //                                tilesMoved = greenTilesMoved;
+                                if (dragonOnBoard){
+                                    nextPosition = coordinatesWithOne.get(dragonPositionIndex);
+                                }else{
+                                nextPosition = new int[]{greenDragon.getX(), greenDragon.getY()};}
                                 break;
                         }
+                        String cardImage = card.getBackImage().trim().toLowerCase();
+                        String dragonImage = getDragonCardImage(nextPosition);
+
                         if (cardImage.contains("skull")) {
                             if (dragonOnBoard) {
 
@@ -316,7 +337,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                             return;
                         }
                         }
-//
+
+                        System.out.println(cardImage +" "+ dragonImage);
                         if (isMatch(cardImage, dragonImage)) {
                             if (cardImage.contains("2")) {
                                 moveDragonForward(2, cardImage);
@@ -335,7 +357,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                 }
 
             }
-        }System.out.println(pinkTilesMoved + "purple: " + purpleTilesMoved +"blue: " + blueTilesMoved +"green: "+ greenTilesMoved);
+        }
         if (((pinkTilesMoved == 25) || (purpleTilesMoved == 25) || (blueTilesMoved == 25) || (greenTilesMoved == 25))) {
             // Trigger the win condition
             setMessage("Congratulations! You have won the game!");
@@ -344,23 +366,48 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         }
 
     }
+//    private boolean isMatch(String cardImage, String dragonImage) {
+//        System.out.println(cardImage);
+//        System.out.println(dragonImage);
+//        // Check if the card image matches the dragon card/tile image
+//
+//        return cardImage.contains(getBaseName(dragonImage));
+//    }
     private boolean isMatch(String cardImage, String dragonImage) {
-        // Check if the card image matches the dragon card/tile image
-        return cardImage.contains(getBaseName(dragonImage));
+        if (cardImage != null && dragonImage != null) {
+            System.out.println(cardImage);
+            System.out.println(dragonImage);
+            // Check if the card image contains the base name of the dragon image
+            return cardImage.contains(getBaseName(dragonImage));
+        }
+        return false; // Return false if either cardImage or dragonImage is null
     }
+
     private String getBaseName(String imagePath) {
-        // Extract the base name from the image path
-        String[] parts = imagePath.split("/");
-        return parts[parts.length - 1].split("\\.")[0];
+//        // Extract the base name from the image path
+//        String[] parts = imagePath.split("/");
+//        return parts[parts.length - 1].split("\\.")[0];
+
+        if (imagePath != null) {
+            // Extract the base name from the image path
+            String[] parts = imagePath.split("/");
+            if (parts.length > 0) {
+                return parts[parts.length - 1].split("\\.")[0];
+            }
+        }
+        return null;
     }
 
     private String getDragonCardImage(int[] nextPosition) {
-        DragonCards dragon = assetSetter.getObjectAtCoordinate(Arrays.toString(nextPosition));
+        System.out.println("dragoncardcheck"+Arrays.toString(nextPosition));
+        DragonCards dragon = assetSetter.getObjectAtCoordinate(nextPosition);
+        System.out.println("dragonimage" + dragon);
+
         if (dragon != null) {
             // Get the dragon card/tile image
             return dragon.getImagePath().trim().toLowerCase();
         }
-        return "";
+        return null;
     }
 
     private void moveDragonForward(int steps, String cardImage) {
@@ -377,7 +424,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 //                return;
 //            }
         }
-
+        System.out.println("move dragon");
         int[] finalPosition = coordinatesWithOne.get(dragonPositionIndex);
         moveDragonToPosition(finalPosition, dragonPositionIndex);
 
